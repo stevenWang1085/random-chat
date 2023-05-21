@@ -1,0 +1,51 @@
+version: '3.1'
+
+services:
+  chat:
+    build:
+      context: ./dockerfiles/
+      dockerfile: web.dockerfile
+    image: chat-system:2.0.4
+    container_name: web-server
+    ports:
+      - ${DOCKER_APACHE_80}:80
+      - ${LARAVEL_WEBSOCKETS_PORT}:6001
+      - ${VITE_PORT}:5173
+    volumes:
+      - ./:/var/www/Laravel
+    depends_on:
+      - mysql
+      - redis
+  mysql:
+    platform: linux/x86_64
+    image: mysql:5.7
+    restart: always
+    ports:
+      - ${DOCKER_MYSQL_3306}:3306
+    container_name: mysql-server
+    command:
+      - --innodb-buffer-pool-size=64M
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_USER: "${MYSQL_ROOT_USER}"
+      MYSQL_ROOT_PASSWORD: "${DOCKER_MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+  redis:
+    container_name: redis-server
+    image: redis
+    ports:
+      - ${DOCKER_REDIS_PORT}:6379
+    command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+    volumes:
+      - ./data/redis:/data
+  supervisor:
+    image: chat-system:2.0.4
+    container_name: supervisor-server
+    volumes:
+      - ./:/var/www/Laravel
+    command: supervisord -n
+    depends_on:
+      - mysql
+      - redis
+      - chat
