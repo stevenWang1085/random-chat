@@ -46,6 +46,18 @@ trait ResponseHelper
                     'status_message' => '查無資料',
                 ];
                 break;
+            case 102:
+                $response = [
+                    'http_status_code' => 200,
+                    'status_message' => '登入成功',
+                ];
+                break;
+            case 103:
+                $response = [
+                    'http_status_code' => 200,
+                    'status_message' => '登出成功',
+                ];
+                break;
             case 200:
                 $response = [
                     'http_status_code' => 200,
@@ -98,6 +110,24 @@ trait ResponseHelper
                 $response = [
                     'http_status_code' => 400,
                     'status_message' => '查詢失敗'
+                ];
+                break;
+            case 601:
+                $response = [
+                    'http_status_code' => 400,
+                    'status_message' => '登入失敗，帳號或密碼錯誤。'
+                ];
+                break;
+            case 602:
+                $response = [
+                    'http_status_code' => 400,
+                    'status_message' => '登出失敗'
+                ];
+                break;
+            case 603:
+                $response = [
+                    'http_status_code' => 400,
+                    'status_message' => '註冊失敗，帳號已有人使用'
                 ];
                 break;
             case 700:

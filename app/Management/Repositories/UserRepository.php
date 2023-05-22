@@ -15,10 +15,18 @@ class UserRepository
 
     public function register($account, $password)
     {
-        return $this->model::query()->firstOrCreate([
+        return $this->model::query()
+            ->firstOrCreate([
             'account'  => $account,
             'password' => $password
         ]);
+    }
+
+    public function findUser($account)
+    {
+        return $this->model::query()
+            ->where('account', $account)
+            ->first();
     }
 
 }

@@ -23,18 +23,13 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        switch ($this->route()->getActionName()) {
+        switch ($this->route()->getActionMethod()) {
             case 'register':
+            case 'login':
                 $rule = [
-                    'account'  => 'required|account|exists:users',
+                    'account'  => 'required|string|min:6',
                     'password' => 'required|min:6'
                 ];
-                break;
-            case 'login':
-                $rule = [];
-                break;
-            case 'logout':
-                $rule = [];
                 break;
             default:
                 $rule = [];
