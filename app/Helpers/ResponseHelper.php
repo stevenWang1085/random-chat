@@ -70,6 +70,18 @@ trait ResponseHelper
                     'status_message' => '註冊成功',
                 ];
                 break;
+            case 202:
+                $response = [
+                    'http_status_code' => 200,
+                    'status_message' => '發送訊息成功',
+                ];
+                break;
+            case 203:
+                $response = [
+                    'http_status_code' => 200,
+                    'status_message' => '開始隨機配對',
+                ];
+                break;
             case 300:
                 $response = [
                     'http_status_code' => 200,

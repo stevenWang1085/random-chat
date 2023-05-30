@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Management\Services\UserService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
@@ -29,7 +31,9 @@ class UserController extends Controller
             DB::beginTransaction();
             $filters = [
                 'account'  => $request->account,
-                'password' => $request->password
+                'password' => $request->password,
+                'username' => $request->username,
+                'gender'   => $request->gender
             ];
             $result = $this->service->register($filters);
             if (!$result) {

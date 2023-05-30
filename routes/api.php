@@ -24,4 +24,8 @@ Route::middleware(['auth'])->prefix('v1')->group(function () {
         Route::post('/login', [\App\Http\Controllers\UserController::class, 'login'])->withoutMiddleware('auth');
         Route::post('/logout', [\App\Http\Controllers\UserController::class, 'logout']);
     });
+
+    Route::prefix('message')->group(function () {
+        Route::post('send', [\App\Http\Controllers\MessageController::class, 'store']);
+    });
 });

@@ -13,6 +13,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/login', function () {
+    return view('login');
+});
+
+Route::get('/register', function () {
+    return view('register');
+});
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
+});
+
+Route::get('/random', function () {
+    return view('random');
+});
+
+Route::get('/friend', function () {
+    return view('friend');
+});
+
+Route::get('/friend_chat', function () {
+    return view('friend_chat');
 });

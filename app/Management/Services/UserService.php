@@ -18,8 +18,8 @@ class UserService
     {
         $user = $this->repository->findUser($filters['account']);
         if (is_null($user)) {
-            $password = password_hash($filters['password'], PASSWORD_DEFAULT);
-            return $this->repository->register($filters['account'], $password);
+            $filters['password'] = password_hash($filters['password'], PASSWORD_DEFAULT);
+            return $this->repository->register($filters);
         } else {
             return false;
         }
