@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Symfony\Component\Console\Input\Input;
 
-class MessageRequest extends FormRequest
+class RandomChatRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,17 +24,14 @@ class MessageRequest extends FormRequest
     public function rules()
     {
         switch ($this->route()->getActionMethod()) {
-            case 'getRoomMessage':
+            case 'startRandom':
                 $rules = [
-                    'room_id'      => 'required|integer|exists:rooms,id',
+                    'gender' => 'required|string|in:all,male,female'
                 ];
                 break;
-            case 'store':
+            case 'leaveRoom':
                 $rules = [
                     'room_id'      => 'required|integer|exists:rooms,id',
-                    'from_user_id' => 'required|integer|exists:users,id',
-                    'to_user_id'   => 'required|integer|exists:users,id',
-                    'message'      => 'required|string'
                 ];
                 break;
             default:

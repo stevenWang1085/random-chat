@@ -21,6 +21,12 @@ class storeRandomOnlineUserJob implements ShouldQueue
 
     private $account;
 
+    private $gender;
+
+    private $select_gender;
+
+    private $username;
+
     /**
      * Create a new job instance.
      *
@@ -31,6 +37,9 @@ class storeRandomOnlineUserJob implements ShouldQueue
         $this->user_id = $user_data['user_id'];
         $this->account = $user_data['account'];
         $this->status = $user_data['status'];
+        $this->gender = $user_data['gender'];
+        $this->username = $user_data['username'];
+        $this->select_gender = $user_data['select_gender'];
     }
 
     /**
@@ -43,19 +52,22 @@ class storeRandomOnlineUserJob implements ShouldQueue
         $now = Carbon::now();
         $cache_key = "random_online_user";
         $data = [
-            'user_id'    => $this->user_id,
-            'account'    => $this->account,
-            'status'     => $this->status,
-            'created_at' => $now->toDateTimeString()
+            'user_id'       => $this->user_id,
+            'account'       => $this->account,
+            'status'        => $this->status,
+            'gender'        => $this->gender,
+            'select_gender' => $this->select_gender,
+            'username'      => $this->username,
+            'created_at'    => $now->toDateTimeString()
         ];
         if (Cache::has($cache_key)) {
             $online_data = Cache::get($cache_key);
             array_push($online_data, $data);
             Cache::put($cache_key, $online_data);
         } else {
-            Cache::put($cache_key, $data);
+            Cache::put($cache_key, [$data]);
         }
         #執行配對指令
-        Artisan::call('match:user');
+        Artisan::call("match:user");
     }
 }

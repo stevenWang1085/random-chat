@@ -32,6 +32,6 @@ class UserService
         Auth::attempt($filters);
         Auth::login(Auth::user());
 
-        return ['user_id' => Auth::id()];
+        return ['user_id' => Auth::id(), 'username' => $user['username']];
     }
 }

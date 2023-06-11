@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MessageRequest;
 use App\Management\Services\MessageService;
+use App\Management\Transformers\MessageTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
 class MessageController extends Controller
 {
     private $service;
+    private $transformer;
 
     public function __construct()
     {
         $this->service = new MessageService();
+        $this->transformer = new MessageTransformer();
     }
 
     /**
@@ -29,10 +32,11 @@ class MessageController extends Controller
         ];
         try {
             $data = $this->service->getRoomMessage($filters);
-            $response = $this->responseMaker(100, null, $data);
+            $result = $this->transformer->transformMessage($data);
+            $response = $this->responseMaker(100, $result);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
-            $response = $this->responseMaker(500, $exception->getMessage(), null);
+            $response = $this->responseMaker(500, $exception->getMessage());
         }
 
         return $response;
@@ -54,10 +58,10 @@ class MessageController extends Controller
         ];
         try {
             $data = $this->service->store($filters);
-            $response = $this->responseMaker(202, null, $data);
+            $response = $this->responseMaker(202, $data);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
-            $response = $this->responseMaker(500, $exception->getMessage(), null);
+            $response = $this->responseMaker(500, $exception->getMessage());
         }
 
         return $response;

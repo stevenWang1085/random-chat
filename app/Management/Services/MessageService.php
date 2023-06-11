@@ -8,6 +8,7 @@ use App\Events\RandomChatMessageEvent;
 use App\Management\Repositories\MessageRepository;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class MessageService
 {
@@ -21,7 +22,7 @@ class MessageService
     public function getRoomMessage($filters)
     {
         $chat_tag = Cache::tags(["room_{$filters['room_id']}"]);
-        $chat_dates = Cache::get("room_{$filters['room_id']}_dates");
+        $chat_dates = Cache::get("room_{$filters['room_id']}_dates") ?? [];
         $chat_data = [];
         foreach ($chat_dates as $date) {
             if ($chat_tag->has($date)) {

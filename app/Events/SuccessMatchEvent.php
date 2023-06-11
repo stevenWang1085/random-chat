@@ -20,6 +20,8 @@ class SuccessMatchEvent implements ShouldBroadcast
 
     private $match_user_account;
 
+    private $match_username;
+
     private $room_id;
 
     /**
@@ -32,6 +34,7 @@ class SuccessMatchEvent implements ShouldBroadcast
         $this->user_id = $data['user_id'];
         $this->match_user_id = $data['match_user_id'];
         $this->match_user_account = $data['match_user_account'];
+        $this->match_username = $data['match_username'];
         $this->room_id = $data['room_id'];
     }
 
@@ -57,6 +60,7 @@ class SuccessMatchEvent implements ShouldBroadcast
             'room_id'            => $this->room_id,
             'match_user_id'      => $this->match_user_id,
             'match_user_account' => $this->match_user_account,
+            'match_username'     => $this->match_username,
         ];
     }
 }

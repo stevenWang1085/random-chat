@@ -1,4 +1,4 @@
-import './bootstrap'
+import './axios.js'
 import {createApp} from 'vue'
 import home from './home.vue'
 

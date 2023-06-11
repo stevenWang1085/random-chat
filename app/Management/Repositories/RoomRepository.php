@@ -18,4 +18,11 @@ class RoomRepository
         return $this->model::query()
             ->create($data);
     }
+
+    public function deleteRoom($room_id)
+    {
+        return $this->model::query()
+            ->where('id', $room_id)
+            ->delete();
+    }
 }

@@ -21,18 +21,27 @@ Route::get('/register', function () {
     return view('register');
 });
 
-Route::get('/', function () {
-    return view('home');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return view('random');
+    });
+    Route::get('/random', function () {
+        return view('random');
+    });
+    Route::get('/friend', function () {
+        return view('friend');
+    });
+
+    Route::get('/friend_check', function () {
+        return view('friend_check');
+    });
+
+    Route::get('/friend_chat', function () {
+        return view('friend_chat');
+    });
 });
 
-Route::get('/random', function () {
-    return view('random');
-});
 
-Route::get('/friend', function () {
-    return view('friend');
-});
 
-Route::get('/friend_chat', function () {
-    return view('friend_chat');
-});
+

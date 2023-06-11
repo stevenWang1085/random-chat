@@ -12,12 +12,12 @@
                                 <p class="text-white-50 mb-5"></p>
 
                                 <div class="form-outline form-white mb-4">
-                                    <input v-model="member.account" id="type_account" class="form-control form-control-lg" />
+                                    <input v-model="member.account"  v-on:keyup.enter="login" id="type_account" class="form-control form-control-lg" />
                                     <label class="form-label" for="type_account">帳號</label>
                                 </div>
 
                                 <div class="form-outline form-white mb-4">
-                                    <input v-model="member.password" type="password" id="typePasswordX" class="form-control form-control-lg" />
+                                    <input v-model="member.password" v-on:keyup.enter="login" type="password" id="typePasswordX" class="form-control form-control-lg" />
                                     <label class="form-label" for="typePasswordX">密碼</label>
                                 </div>
 
@@ -48,6 +48,9 @@
 import {reactive, ref} from "vue";
 export default {
     name: "login",
+    props: {
+
+    },
     setup() {
         const member = reactive({
             account: '',
@@ -63,6 +66,7 @@ export default {
             }).then((response) => {
                 console.log(response);
                 localStorage.setItem('user_id', response.data.return_data.user_id);
+                localStorage.setItem('username', response.data.return_data.username);
                 location.href = '/random';
                 }
             ).catch((error) => {

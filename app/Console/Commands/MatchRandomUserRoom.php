@@ -17,7 +17,7 @@ class MatchRandomUserRoom extends Command
      *
      * @var string
      */
-    protected $signature = 'match:user';
+    protected $signature = 'match:user {--gender=} {--select_gender=}';
 
     /**
      * The console command description.
@@ -35,12 +35,15 @@ class MatchRandomUserRoom extends Command
     {
         $room_repository = new RoomRepository();
         $user_room_repository = new UserRoomRepository();
-
         try {
             DB::beginTransaction();
             #取得線上隨機聊天使用者(等待中)
-            $online_user = collect(Cache::get('random_online_user'));
-            $online_user = $online_user->where('status', '=', 'pending');
+            $origin_online_user = collect(Cache::get('random_online_user'));
+            $online_user = $origin_online_user->where('status', '=', 'pending');
+//            if ($select_gender != 'all') {
+//                $online_user = $online_user->where('gender', '=', $select_gender)
+//                    ->where('select_gender', $gender);
+//            }
             foreach ($online_user->chunk(2) as $value) {
                 if ($value->count() != 2) break;
                 #建立房間
@@ -53,40 +56,47 @@ class MatchRandomUserRoom extends Command
                 $user_room_data = [
                     [
                         'room_id' => $room->id,
-                        'user_id' => $first_user->user_id
+                        'user_id' => $first_user['user_id']
                     ],
                     [
                         'room_id' => $room->id,
-                        'user_id' => $second_user->user_id
+                        'user_id' => $second_user['user_id']
                     ]
                 ];
                 $user_room_repository->insert($user_room_data);
                 #寄送配對成功event
                 $first_event_data = [
-                    'user_id'            => $first_user->id,
-                    'match_user_id'      => $second_user->user_id,
-                    'match_user_account' => $second_user->account,
+                    'user_id'            => $first_user['user_id'],
+                    'match_user_id'      => $second_user['user_id'],
+                    'match_user_account' => $second_user['account'],
+                    'match_username'     => $second_user['username'],
                     'room_id'            => $room->id
                 ];
                 $second_event_data = [
-                    'user_id'            => $second_user->id,
-                    'match_user_id'      => $first_user->user_id,
-                    'match_user_account' => $first_user->account,
+                    'user_id'            => $second_user['user_id'],
+                    'match_user_id'      => $first_user['user_id'],
+                    'match_user_account' => $first_user['account'],
+                    'match_username'     => $first_user['username'],
                     'room_id'            => $room->id
                 ];
                 event(new SuccessMatchEvent($first_event_data));
                 event(new SuccessMatchEvent($second_event_data));
                 #更新隨機配對線上清單
-                $first_user->status = 'chat';
-                $second_user->status = 'chat';
-                DB::commit();
+//                $update_value = $value->map(function ($node) {
+//                    $node['status'] = 'chat';
+//                    return $node;
+//                });
+//                Cache::put('random_online_user', $update_value->values()->all());
+                Cache::forget('random_online_user');
             }
-
+            DB::commit();
         } catch (\Exception $exception) {
-            Log::error($exception->getMessage());
+            Log::error('Match User Command Error', [
+                'line' => $exception->getLine(),
+                'msg' => $exception->getMessage()
+            ]);
             DB::rollBack();
         }
-
         return Command::SUCCESS;
     }
 }

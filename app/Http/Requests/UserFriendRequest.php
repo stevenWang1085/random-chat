@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Symfony\Component\Console\Input\Input;
+use Illuminate\Support\Facades\Auth;
 
-class MessageRequest extends FormRequest
+class UserFriendRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,17 +25,23 @@ class MessageRequest extends FormRequest
     public function rules()
     {
         switch ($this->route()->getActionMethod()) {
-            case 'getRoomMessage':
+            case 'list':
                 $rules = [
-                    'room_id'      => 'required|integer|exists:rooms,id',
+                    'user_id' => 'required|integer|exists:users,id',
+                    'status'  => 'required|string|in:pending,confirm,reject,block,remove',
                 ];
                 break;
             case 'store':
                 $rules = [
-                    'room_id'      => 'required|integer|exists:rooms,id',
-                    'from_user_id' => 'required|integer|exists:users,id',
-                    'to_user_id'   => 'required|integer|exists:users,id',
-                    'message'      => 'required|string'
+//                    'from_user_id' => 'required|integer|exists:users,id',
+                    'to_user_id'   => 'required|integer|exists:users,id|notIn:' . Auth::id(),
+                    'status'       => 'required|string|in:pending'
+                ];
+                break;
+            case 'update':
+                $rules = [
+                    'user_friend_id' => 'required|integer|exists:user_friends,id',
+                    'status'         => 'required|string|in:pending,confirm,reject,block,remove',
                 ];
                 break;
             default:

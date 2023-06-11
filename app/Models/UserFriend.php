@@ -2,27 +2,24 @@
 
 namespace App\Models;
 
+use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Message extends Model
+class UserFriend extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+    use SoftDeletes, SoftCascadeTrait;
 
-    protected $table = 'messages';
+    protected $table = 'user_friends';
+
+    protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'room_id',
         'from_user_id',
         'to_user_id',
-        'message',
-        'data_insert_at'
+        'status',
+        'room_id'
     ];
-
-    public function relationRoom()
-    {
-        return $this->belongsTo(Room::class, 'room_id', 'id');
-    }
 }

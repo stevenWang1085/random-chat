@@ -13,9 +13,9 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function responseMaker($code, $message, $data): JsonResponse
+    public function responseMaker($code, $data): JsonResponse
     {
-        $result = ResponseHelper::responseMaker($code, $message, $data);
+        $result = ResponseHelper::responseMaker($code, $data);
 
         return response()->json($result, $result['http_status_code'])
             ->header('Content-Type', 'application/json');

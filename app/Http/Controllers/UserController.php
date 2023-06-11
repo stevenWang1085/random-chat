@@ -37,15 +37,15 @@ class UserController extends Controller
             ];
             $result = $this->service->register($filters);
             if (!$result) {
-                $response = $this->responseMaker(603, null, null);
+                $response = $this->responseMaker(603, null);
             } else {
-                $response = $this->responseMaker(201, null, null);
+                $response = $this->responseMaker(201, null);
             }
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error($exception->getMessage());
-            $response = $this->responseMaker(500, $exception->getMessage(), null);
+            $response = $this->responseMaker(500, $exception->getMessage());
         }
 
         return $response;
@@ -66,13 +66,13 @@ class UserController extends Controller
             ];
             $data = $this->service->login($filters);
             if (!$data) {
-                $response = $this->responseMaker(601, null, $data);
+                $response = $this->responseMaker(601, $data);
             } else {
-                $response = $this->responseMaker(102, null, $data);
+                $response = $this->responseMaker(102, $data);
             }
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
-            $response = $this->responseMaker(500, $exception->getMessage(), null);
+            $response = $this->responseMaker(500, $exception->getMessage());
         }
 
         return $response;
@@ -90,10 +90,10 @@ class UserController extends Controller
             $user_id = Auth::id();
             $return_data = ['user_id' => $user_id];
             Auth::logout();
-            return $this->responseMaker(103, null, $return_data);
+            return $this->responseMaker(103, $return_data);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
-            return $this->responseMaker(500, $exception->getMessage(), null);
+            return $this->responseMaker(500, $exception->getMessage());
         }
     }
 }
