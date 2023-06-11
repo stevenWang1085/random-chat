@@ -24,7 +24,6 @@ export default ({ mode }) => {
                     'resources/js/bootstrap.js',
                     'resources/js/friend.js',
                     'resources/js/friend_check.js',
-                    'resources/js/friend_chat.js',
                     'resources/js/home.js',
                     'resources/js/login_page.js',
                     'resources/js/random.js',
