@@ -31,7 +31,7 @@ class UserFriendController extends Controller
             ];
             $data = $this->service->index($filters);
             if ($data->isEmpty()) {
-                return $this->responseMaker(101, null);
+                return $this->responseMaker(101, []);
             }
             $result = $this->transform->transformFriendList($data, $filters);
             $response = $this->responseMaker(100, $result);
