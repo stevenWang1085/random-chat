@@ -13,12 +13,14 @@ class UserRepository
         $this->model = new User();
     }
 
-    public function register($account, $password)
+    public function register($filters)
     {
         return $this->model::query()
             ->firstOrCreate([
-            'account'  => $account,
-            'password' => $password
+            'account'  => $filters['account'],
+            'password' => $filters['password'],
+            'gender'   => $filters['gender'],
+            'username' => $filters['username'],
         ]);
     }
 

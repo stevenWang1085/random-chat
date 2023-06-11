@@ -10,7 +10,7 @@ namespace App\Helpers;
 
 trait ResponseHelper
 {
-    public static function responseMaker($code, $message, $data = null)
+    public static function responseMaker($code, $data)
     {
         $project_code = 001;
 
@@ -28,12 +28,6 @@ trait ResponseHelper
          */
 
         switch ($code) {
-            case 1:
-                $response = [
-                    'http_status_code' => 400,
-                    'status_message' => $message,
-                ];
-                break;
             case 100:
                 $response = [
                     'http_status_code' => 200,
@@ -70,6 +64,36 @@ trait ResponseHelper
                     'status_message' => '註冊成功',
                 ];
                 break;
+            case 202:
+                $response = [
+                    'http_status_code' => 200,
+                    'status_message' => '發送訊息成功',
+                ];
+                break;
+            case 203:
+                $response = [
+                    'http_status_code' => 200,
+                    'status_message' => '開始隨機配對',
+                ];
+                break;
+            case 204:
+                $response = [
+                    'http_status_code' => 200,
+                    'status_message' => '配對中',
+                ];
+                break;
+            case 205:
+                $response = [
+                    'http_status_code' => 200,
+                    'status_message' => '已配對',
+                ];
+                break;
+            case 206:
+                $response = [
+                    'http_status_code' => 200,
+                    'status_message' => '未配對',
+                ];
+                break;
             case 300:
                 $response = [
                     'http_status_code' => 200,
@@ -82,10 +106,16 @@ trait ResponseHelper
                     'status_message' => '刪除成功',
                 ];
                 break;
+            case 401:
+                $response = [
+                    'http_status_code' => 200,
+                    'status_message' => '離開配對房間',
+                ];
+                break;
             case 500:
                 $response = [
                     'http_status_code' => 400,
-                    'status_message' => '程式異常:'.$message,
+                    'status_message' => $data,
                 ];
                 break;
             case 501:
@@ -134,6 +164,12 @@ trait ResponseHelper
                 $response = [
                     'http_status_code' => 400,
                     'status_message' => '新增失敗'
+                ];
+                break;
+            case 701:
+                $response = [
+                    'http_status_code' => 400,
+                    'status_message' => '已是好友關係。'
                 ];
                 break;
             case 800:

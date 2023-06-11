@@ -1,17 +1,39 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import laravel from 'laravel-vite-plugin';
+import vue from '@vitejs/plugin-vue'
 
-export default defineConfig({
-    server: {
-        host: true,
-        hmr: {
-            host: '127.0.0.1'
+
+export default ({ mode }) => {
+    process.env = {...process.env, ...loadEnv(mode, process.cwd())};
+
+    return  defineConfig({
+        server: {
+            host: true,
+            hmr: {
+                host: process.env.PUSHER_HOST,
+                clientPort: process.env.VITE_PORT,
+            },
         },
-    },
-    plugins: [
-        laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
-            refresh: true,
-        }),
-    ],
-});
+        plugins: [
+            vue(),
+            laravel({
+                input: [
+                    'resources/css/app.css',
+                    'resources/js/app.js',
+                    'resources/js/axios.js',
+                    'resources/js/bootstrap.js',
+                    'resources/js/friend.js',
+                    'resources/js/friend_check.js',
+                    'resources/js/friend_chat.js',
+                    'resources/js/home.js',
+                    'resources/js/login_page.js',
+                    'resources/js/random.js',
+                    'resources/js/register.js',
+                    'resources/js/websocket.js',
+                ],
+                refresh: true,
+            }),
+        ],
+    });
+}
+

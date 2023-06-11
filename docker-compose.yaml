@@ -9,7 +9,6 @@ services:
     container_name: web-server
     ports:
       - ${DOCKER_APACHE_80}:80
-      - ${LARAVEL_WEBSOCKETS_PORT}:6001
       - ${VITE_PORT}:5173
     volumes:
       - ./:/var/www/Laravel
@@ -42,6 +41,8 @@ services:
   supervisor:
     image: chat-system:2.0.4
     container_name: supervisor-server
+    ports:
+      - ${LARAVEL_WEBSOCKETS_PORT}:6001
     volumes:
       - ./:/var/www/Laravel
     command: supervisord -n

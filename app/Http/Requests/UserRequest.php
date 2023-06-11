@@ -25,16 +25,23 @@ class UserRequest extends FormRequest
     {
         switch ($this->route()->getActionMethod()) {
             case 'register':
+                $rules = [
+                    'account'  => 'required|string|min:6|unique:users',
+                    'password' => 'required|min:6',
+                    'username' => 'required|min:1|unique:users',
+                    'gender'   => 'required|in:male,female'
+                ];
+                break;
             case 'login':
-                $rule = [
+                $rules = [
                     'account'  => 'required|string|min:6',
-                    'password' => 'required|min:6'
+                    'password' => 'required|min:6',
                 ];
                 break;
             default:
-                $rule = [];
+                $rules = [];
         }
 
-        return $rule;
+        return $rules;
     }
 }

@@ -13,6 +13,35 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/login', function () {
+    return view('login');
 });
+
+Route::get('/register', function () {
+    return view('register');
+});
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return view('random');
+    });
+    Route::get('/random', function () {
+        return view('random');
+    });
+    Route::get('/friend', function () {
+        return view('friend');
+    });
+
+    Route::get('/friend_check', function () {
+        return view('friend_check');
+    });
+
+    Route::get('/friend_chat', function () {
+        return view('friend_chat');
+    });
+});
+
+
+
+
