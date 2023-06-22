@@ -127,6 +127,8 @@
 
             <div class="input-group input-group-lg">
                 <input v-model="chat_message"
+                       v-on:keypress.enter="sendMessage"
+                       v-on:keypress.NumpadEnter="sendMessage"
                        @keyup="getKeyUpForWhisper"
                        type="text"
                        class="form-control fixed-bottom input-text"
@@ -258,7 +260,6 @@ export default {
                         })
                     })
                     .listenForWhisper('typing', function (e) {
-                        console.log(e);
                         typing.value = true;
                         typing_data.value = {
                             user_id: e.user_id,

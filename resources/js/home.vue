@@ -36,6 +36,7 @@
                                 <path d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
                             </svg>
                             審核列表
+                            <span v-if="add_friend_unread_count > 0" class="badge bg-danger rounded-pill">{{add_friend_unread_count}}</span>
                         </a>
                     </li>
                 </ul>
@@ -67,13 +68,23 @@
 </template>
 
 <script>
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 
 export default {
     name: "home",
     setup () {
         let username = ref(null);
+        let personal_channel_name = 'personal-room-' + localStorage.getItem('user_id');
+        let add_friend_unread_count = ref(0);
         username.value = localStorage.getItem('username');
+        add_friend_unread_count.value = sessionStorage.getItem('add_friend_unread_count');
+        onMounted(function () {
+            Echo.private(personal_channel_name)
+                .listen('.unread_add_friend_event', function (e) {
+                    add_friend_unread_count.value = e.unread_count;
+                    sessionStorage.setItem('add_friend_unread_count', add_friend_unread_count.value);
+                })
+        });
         function logout () {
             axios.post('api/v1/user/logout', {
             }).then((response) => {
@@ -86,6 +97,7 @@ export default {
 
         return {
             username,
+            add_friend_unread_count,
             logout
         }
     }

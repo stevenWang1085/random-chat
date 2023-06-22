@@ -11,22 +11,22 @@
                                 <h2 class="fw-bold mb-2 text-uppercase">登入</h2>
                                 <p class="text-white-50 mb-5"></p>
 
-                                <div class="form-outline form-white mb-4">
+                                <div class="form-outline form-white mb-6">
                                     <input v-model="member.account"  v-on:keyup.enter="login" id="type_account" class="form-control form-control-lg" />
                                     <label class="form-label" for="type_account">帳號</label>
                                 </div>
 
-                                <div class="form-outline form-white mb-4">
+                                <div class="form-outline form-white mb-6">
                                     <input v-model="member.password" v-on:keyup.enter="login" type="password" id="typePasswordX" class="form-control form-control-lg" />
                                     <label class="form-label" for="typePasswordX">密碼</label>
                                 </div>
 
-                                <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">忘記密碼？</a></p>
+<!--                                <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">忘記密碼？</a></p>-->
 
                                 <button @click="login" class="btn btn-outline-light btn-lg px-5" type="submit">登入</button>
 
                                 <div class="d-flex justify-content-center text-center mt-4 pt-1">
-                                    <a href="#!" class="text-white"><i class="fab fa-google fa-lg"></i></a>
+                                    <a href="google/redirect" class="text-white"><i class="fab fa-google fa-lg"></i></a>
                                 </div>
 
                             </div>
@@ -67,6 +67,7 @@ export default {
                 console.log(response);
                 localStorage.setItem('user_id', response.data.return_data.user_id);
                 localStorage.setItem('username', response.data.return_data.username);
+                sessionStorage.setItem('add_friend_unread_count', response.data.return_data.add_friend_unread_count);
                 location.href = '/random';
                 }
             ).catch((error) => {

@@ -21,19 +21,22 @@
                                     <label class="form-label" for="typePasswordX">密碼</label>
                                 </div>
 
-                                <div class="form-outline form-white mb-4">
+                                <div class="form-outline form-white mb-5">
                                     <input v-model="member.username" id="nickname" class="form-control form-control-lg" />
                                     <label class="form-label" for="nickname">使用名稱</label>
                                 </div>
-                                <div class="form-outline form-white mb-4">
-                                    <div class="form-floating">
-                                        <select v-model="member.gender" class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                            <option value="male">男</option>
-                                            <option value="female">女</option>
-                                        </select>
-                                        <label class="form-label" for="floatingSelect">性別</label>
+                                <div class="form-outline form-white mb-5">
+                                    <div class="form-outline form-white mb-4">
+                                        <div class="form-floating">
+                                            <select v-model="member.gender" class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                                <option value="male">男</option>
+                                                <option value="female">女</option>
+                                            </select>
+                                            <label class="form-label"  for="floatingSelect">性別</label>
+                                        </div>
                                     </div>
                                 </div>
+
 
 <!--                                <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a></p>-->
 

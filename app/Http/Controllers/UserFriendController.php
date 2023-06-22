@@ -57,7 +57,7 @@ class UserFriendController extends Controller
             ];
             $data = $this->service->store($filters);
             DB::commit();
-            $response = $this->responseMaker(200, $data);
+            $response = $this->responseMaker($data['code'], null);
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error($exception->getMessage());

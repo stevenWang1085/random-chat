@@ -1,4 +1,5 @@
 import './axios'
+import './websocket'
 import {createApp} from 'vue'
 import friend_chat from './friend_check.vue'
 

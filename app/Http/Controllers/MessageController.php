@@ -28,11 +28,12 @@ class MessageController extends Controller
     public function getRoomMessage(MessageRequest $request)
     {
         $filters = [
-            'room_id' => $request->room_id
+            'room_id'   => $request->room_id,
+            'room_type' => $request->room_type
         ];
         try {
             $data = $this->service->getRoomMessage($filters);
-            $result = $this->transformer->transformMessage($data);
+            $result = $this->transformer->transformMessage($data, $filters['room_type']);
             $response = $this->responseMaker(100, $result);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
@@ -54,11 +55,12 @@ class MessageController extends Controller
             'room_id'      => $request->room_id,
             'from_user_id' => $request->from_user_id,
             'to_user_id'   => $request->to_user_id,
-            'message'      => $request->message
+            'message'      => $request->message,
+            'room_type'    => $request->room_type
         ];
         try {
             $data = $this->service->store($filters);
-            $response = $this->responseMaker(202, $data);
+            $response = $this->responseMaker($data['code'], $data['data']);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
             $response = $this->responseMaker(500, $exception->getMessage());

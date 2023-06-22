@@ -73,4 +73,12 @@ class UserFriendRepository
             ->where('id', $user_friend_id)
             ->update($update_data);
     }
+
+    public function getFriendStatus($from_user_id, $to_user_id)
+    {
+        return $this->model::query()
+            ->where('from_user_id', $from_user_id)
+            ->where('to_user_id', $to_user_id)
+            ->first();
+    }
 }
