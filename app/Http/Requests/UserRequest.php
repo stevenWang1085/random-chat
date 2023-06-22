@@ -38,6 +38,12 @@ class UserRequest extends FormRequest
                     'password' => 'required|min:6',
                 ];
                 break;
+
+            case 'editProfile':
+                $rules = [
+                    'gender'  => 'required|string|in:male,female',
+                ];
+                break;
             default:
                 $rules = [];
         }

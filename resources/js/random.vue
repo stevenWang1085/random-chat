@@ -112,6 +112,8 @@
                 <input v-model="chat_message"
                        :disabled="input_disabled"
                        v-if="input_status"
+                       v-on:keypress.enter="sendMessage"
+                       v-on:keypress.NumpadEnter="sendMessage"
                        @keyup="getKeyUpForWhisper"
                        type="text"
                        class="form-control fixed-bottom input-text"
@@ -132,34 +134,28 @@
                 <div class="form-floating">
                     <select v-model="gender" class="form-select" id="floatingSelect" aria-label="Floating label select example"
                             v-bind:disabled="start_random_status">
-                        <option value="all" selected>不限</option>
-                        <option value="male">男</option>
-                        <option value="female">女</option>
+                        <option value="all" :selected="gender">不限</option>
+                        <option value="male" :selected="gender">男</option>
+                        <option value="female" :selected="gender">女</option>
                     </select>
                     <label for="floatingSelect">性別</label>
                 </div>
-<!--                <div class="form-floating">-->
-<!--                    <select class="form-select" id="age-select" aria-label="Floating label select example"-->
-<!--                            v-bind:disabled="start_random_status">-->
-<!--                        <option value="all" selected>不限</option>-->
-<!--                        <option value="male">18-30</option>-->
-<!--                        <option value="female">30-40</option>-->
-<!--                    </select>-->
-<!--                    <label for="age-select">年齡</label>-->
-<!--                </div>-->
             </div>
             <div class="card-footer text-muted">
-
             </div>
-            <button @click="startRandom" v-bind:disabled="start_random_status" type="button"
-                    class="btn btn-outline-success ">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button @click="startRandom" v-bind:disabled="start_random_status" type="button"
+                        class="btn btn-outline-success ">
                 <span v-show="start_random_status" class="spinner-border spinner-border-sm" role="status"
                       aria-hidden="true"></span>
-                {{ start_random_show }}
-            </button>
-<!--            <button @click="cancelRandom" v-show="start_random_status" type="button" class="btn btn-outline-danger">-->
-<!--                取消-->
-<!--            </button>-->
+                    {{ start_random_show }}
+                </button>
+                <button @click="cancelRandom" v-show="start_random_status" type="button" class="btn btn-outline-danger">
+                    取消
+                </button>
+            </div>
+
+
         </div>
     </div>
 
@@ -177,6 +173,7 @@ export default {
         let to_user_id = ref(null);
         let chat_div = ref(false);
         let start_random_status = ref(false);
+        let cancel_random_status = ref(false);
         let match_user_alert = ref(false);
         let random_select = ref(true);
         let start_random_show = ref('開始聊天');
@@ -237,7 +234,6 @@ export default {
                     })
                 })
                 .listenForWhisper('typing', function (e) {
-                    console.log(e);
                     typing.value = true;
                     typing_data.value = {
                         user_id: e.user_id,
@@ -268,7 +264,7 @@ export default {
         }
 
         function getKeyUpForWhisper(e) {
-            if (e.code !== 'Enter') {
+            if (e.code !== 'Enter' && e.code !== 'NumpadEnter') {
                 setTimeout(function () {
                     Echo.private(random_chat_room_channel_name)
                         .whisper('typing', {
@@ -284,7 +280,8 @@ export default {
                 room_id: random_room_id.value,
                 from_user_id: user_id,
                 to_user_id: to_user_id.value,
-                message: chat_message.value
+                message: chat_message.value,
+                room_type: 'random'
             }).then((response) => {
                 console.log(response);
                 chat_message.value = '';
@@ -296,7 +293,7 @@ export default {
 
         function checkRandomChat() {
             // 檢查是否已在配對
-            axios.post('api/v1/check_random', {}).then((response) => {
+            axios.post('api/v1/random/check', {}).then((response) => {
                     console.log(response);
                     if (response.data.code === '1205') {
                         //已配對
@@ -313,6 +310,9 @@ export default {
                         //配對中
                         start_random_status.value = true;
                         start_random_show.value = '配對中';
+                        cancel_random_status.value = true;
+                        gender.value = localStorage.getItem('select_gender');
+
                     }
                 }
             ).catch((error) => {
@@ -332,7 +332,7 @@ export default {
                     start_random_status.value = false;
                     match_user_alert.value = false;
                     start_random_show.value = '開始聊天';
-                    axios.post('api/v1/leave_random', {
+                    axios.post('api/v1/random/leave', {
                         to_user_id: to_user_id.value,
                         room_id: random_room_id.value
                     })
@@ -352,7 +352,11 @@ export default {
         }
 
         async function getRoomChatData(room_id) {
-            await axios.get('api/v1/message/room/' + room_id).then((response) => {
+            await axios.get('api/v1/message/room/' + room_id, {
+                params: {
+                    room_type: "random"
+                }
+            }).then((response) => {
                     console.log(response);
                     if (response.data.return_data.length > 0) {
                         random_message.value = response.data.return_data;
@@ -370,10 +374,12 @@ export default {
         }
 
         function startRandom() {
+            cancel_random_status.value = true;
             start_random_status.value = true;
             start_random_show.value = '配對中';
-            axios.post('api/v1/start_random', {
-                gender: gender.value
+            localStorage.setItem('select_gender', gender.value);
+            axios.post('api/v1/random/start', {
+                select_gender: gender.value
             }).then((response) => {
                     console.log(response);
                 }
@@ -383,7 +389,15 @@ export default {
         }
         function cancelRandom() {
             start_random_status.value = false;
+            gender.value = 'all';
             start_random_show.value = '開始聊天';
+            axios.post('api/v1/random/cancel')
+                .then((response) => {
+                    console.log(response);
+                }
+            ).catch((error) => {
+                console.log(error)
+            });
         }
 
         return {
@@ -408,11 +422,13 @@ export default {
             leave_show_status,
             function_show,
             gender,
+            cancel_random_status,
             leaveChannel,
             startRandom,
             inviteFriend,
             sendMessage,
-            getKeyUpForWhisper
+            getKeyUpForWhisper,
+            cancelRandom
         }
     }
 }

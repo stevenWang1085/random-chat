@@ -112,6 +112,12 @@ trait ResponseHelper
                     'status_message' => '離開配對房間',
                 ];
                 break;
+            case 402:
+                $response = [
+                    'http_status_code' => 200,
+                    'status_message' => '取消配對成功',
+                ];
+                break;
             case 500:
                 $response = [
                     'http_status_code' => 400,
@@ -160,6 +166,18 @@ trait ResponseHelper
                     'status_message' => '註冊失敗，帳號已有人使用'
                 ];
                 break;
+            case 605:
+                $response = [
+                    'http_status_code' => 400,
+                    'status_message' => '房間用戶錯誤'
+                ];
+                break;
+            case 606:
+                $response = [
+                    'http_status_code' => 400,
+                    'status_message' => '無此房間'
+                ];
+                break;
             case 700:
                 $response = [
                     'http_status_code' => 400,
@@ -170,6 +188,30 @@ trait ResponseHelper
                 $response = [
                     'http_status_code' => 400,
                     'status_message' => '已是好友關係。'
+                ];
+                break;
+            case 702:
+                $response = [
+                    'http_status_code' => 400,
+                    'status_message' => '對方已拒絕。'
+                ];
+                break;
+            case 703:
+                $response = [
+                    'http_status_code' => 400,
+                    'status_message' => '對方已送出邀請。'
+                ];
+                break;
+            case 704:
+                $response = [
+                    'http_status_code' => 400,
+                    'status_message' => '對方審核中。'
+                ];
+                break;
+            case 705:
+                $response = [
+                    'http_status_code' => 400,
+                    'status_message' => '已拒絕加好友。'
                 ];
                 break;
             case 800:

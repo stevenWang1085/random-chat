@@ -4,12 +4,15 @@ namespace App\Management\Transformers;
 
 class MessageTransformer
 {
-    public function transformMessage($data)
+    public function transformMessage($data, $room_type)
     {
         $result = [];
-        foreach ($data as $key => $value) {
-            foreach ($value as $chat_message) {
-                array_push($result, $chat_message);
+        if ($room_type == 'random') {
+            $result = $data->sortBy('created_at')->values()->all();
+        } else {
+            #personal
+            foreach ($data as $date => $value) {
+                $result = array_merge($result, $value->toArray());
             }
         }
 
