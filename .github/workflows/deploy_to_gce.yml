@@ -34,8 +34,8 @@ jobs:
       - name: Deploy to GCE
         uses: 'google-github-actions/ssh-compute@v0'
         with:
-          instance_name: ${{ secrets.GCE_INSTANCE }}
-          zone: ${{ secrets.GCE_INSTANCE_ZONE }}
+          instance_name: chat-system-1
+          zone: asia-east1-b
           ssh_private_key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
           command: |
             sudo chmod 777 /var/run/docker.sock
