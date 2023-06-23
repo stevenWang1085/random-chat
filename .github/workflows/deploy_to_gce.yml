@@ -3,7 +3,7 @@ name: Laravel CD - testing and deploy to GCE
 on:
   push:
     branches:
-      - develop
+      - master
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
   GCE_INSTANCE: ${{ secrets.GCE_INSTANCE }}
@@ -34,12 +34,12 @@ jobs:
       - name: Deploy to GCE
         uses: 'google-github-actions/ssh-compute@v0'
         with:
-          instance_name: ${{ secrets.GCE_INSTANCE }}
-          zone: ${{ secrets.GCE_INSTANCE_ZONE }}
+          instance_name: chat-system-1
+          zone: asia-east1-b
           ssh_private_key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
           command: |
             sudo chmod 777 /var/run/docker.sock
-            cd /var/www/chat-system
+            cd /var/www/random-chat
             sudo chmod -R 777 .git
             sudo git config --global --add safe.directory /var/www/random-chat
             sudo git pull
