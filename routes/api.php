@@ -27,6 +27,8 @@ Route::middleware(['auth'])->prefix('v1')->group(function () {
         Route::post('/register', [UserController::class, 'register'])->withoutMiddleware('auth');
         Route::post('/login', [UserController::class, 'login'])->withoutMiddleware('auth');
         Route::post('/logout', [UserController::class, 'logout']);
+        Route::patch('edit/profile', [UserController::class, 'editProfile']);
+        Route::get('/google/login', [UserController::class, 'googleLogin'])->withoutMiddleware('auth');
     });
 
     Route::prefix('friend')->group(function () {
@@ -36,12 +38,11 @@ Route::middleware(['auth'])->prefix('v1')->group(function () {
     });
 
     Route::prefix('random')->group(function () {
-
+        Route::post('start', [RandomChatController::class, 'startRandom']);
+        Route::post('check', [RandomChatController::class, 'checkRandomChat']);
+        Route::post('leave', [RandomChatController::class, 'leaveRandomRoom']);
+        Route::post('cancel', [RandomChatController::class, 'cancelRandom']);
     });
-
-    Route::post('start_random', [RandomChatController::class, 'startRandom']);
-    Route::post('check_random', [RandomChatController::class, 'checkRandomChat']);
-    Route::post('leave_random', [RandomChatController::class, 'leaveRandomRoom']);
 
     Route::prefix('message')->group(function () {
         Route::get('room/{room_id}', [MessageController::class, 'getRoomMessage']);

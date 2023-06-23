@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Management\Services\UserService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redis;
+use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends Controller
 {
@@ -17,6 +16,39 @@ class UserController extends Controller
     public function __construct()
     {
         $this->service = new UserService();
+    }
+
+    public function googleRedirect()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function googleLogin()
+    {
+        try {
+            DB::beginTransaction();
+            #新增google use data
+            $google_user = Socialite::driver('google')->stateless()->user();
+            $filters = [
+                'account' => $google_user->email,
+                'password' => $google_user->email,
+                'gender' => null,
+                'username' => $google_user->name,
+            ];
+            $data = $this->service->register($filters, 'google');
+            if (!$data) {
+                $response = $this->responseMaker(601, $data);
+            } else {
+                $response = $this->responseMaker(102, $data);
+            }
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error($exception->getMessage());
+            $response = $this->responseMaker(500, $exception->getMessage());
+        }
+
+        return $response;
     }
 
     /**
@@ -95,5 +127,24 @@ class UserController extends Controller
             Log::error($exception->getMessage());
             return $this->responseMaker(500, $exception->getMessage());
         }
+    }
+
+    public function editProfile(UserRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $filters = [
+                'gender'  => $request->gender,
+            ];
+            $this->service->editProfile($filters);
+            DB::commit();
+            return $this->responseMaker(300, null);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error($exception->getMessage());
+            $response = $this->responseMaker(500, $exception->getMessage());
+        }
+
+        return $response;
     }
 }

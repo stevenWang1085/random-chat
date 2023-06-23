@@ -48,7 +48,7 @@ RUN apt update && apt install -y nodejs
 
 # Setting supervisor
 RUN mkdir -p /var/log/supervisor
-#COPY supervisor/schedule.conf /etc/supervisor/conf.d
+COPY supervisor/schedule.conf /etc/supervisor/conf.d
 COPY supervisor/websockets.conf /etc/supervisor/conf.d
 COPY supervisor/queue.conf /etc/supervisor/conf.d
 

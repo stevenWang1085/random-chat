@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Spatie\ShortSchedule\ShortSchedule;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,10 +14,18 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
-    protected function schedule(Schedule $schedule)
+//    protected function schedule(Schedule $schedule)
+//    {
+//        $schedule->command('test:name')->everyMinute();
+//    }
+
+    protected function shortSchedule(ShortSchedule $shortSchedule)
     {
-        $schedule->command('test:name')->everyMinute();
+        $shortSchedule->command('match:user_v2')
+            ->withoutOverlapping()
+            ->everySeconds(3);
     }
+
 
     /**
      * Register the commands for the application.

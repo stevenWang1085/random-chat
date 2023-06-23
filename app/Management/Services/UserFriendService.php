@@ -2,9 +2,11 @@
 
 namespace App\Management\Services;
 
+use App\Events\UnReadEvent;
 use App\Management\Repositories\RoomRepository;
 use App\Management\Repositories\UserFriendRepository;
 use App\Management\Repositories\UserRoomRepository;
+use Illuminate\Support\Facades\Redis;
 
 class UserFriendService
 {
@@ -26,12 +28,40 @@ class UserFriendService
 
     public function store($filters)
     {
-        return $this->repository->store(
-            $filters['from_user_id'],
-            $filters['to_user_id'],
-            $filters['status'],
-            null
-        );
+        #檢查是否已經送過或早已是好友
+        $check_from_friend = $this->repository->getFriendStatus($filters['from_user_id'], $filters['to_user_id']);
+        $check_to_friend = $this->repository->getFriendStatus($filters['to_user_id'], $filters['from_user_id']);
+
+
+        if (! is_null($check_from_friend)) {
+            if ($check_from_friend['status'] == 'confirm') {
+                return  ['code' => 701];
+            } elseif ($check_from_friend['status'] == 'reject') {
+                return  ['code' => 702];
+            } else {
+                return  ['code' => 704];
+            }
+        } else {
+            if (! is_null($check_to_friend)) {
+                if ($check_to_friend['status'] == 'reject') {
+                    return  ['code' => 705];
+                } else {
+                    return  ['code' => 703];
+                }
+            } else {
+                #pending
+                #送出提醒事件
+                Redis::incr("user_id_{$filters['to_user_id']}_unread_add_friend_count");
+                event(new UnReadEvent('add_friend', $filters['to_user_id']));
+                $this->repository->store(
+                    $filters['from_user_id'],
+                    $filters['to_user_id'],
+                    $filters['status'],
+                    null
+                );
+                return ['code' => 200];
+            }
+        }
     }
 
     public function update($filters)

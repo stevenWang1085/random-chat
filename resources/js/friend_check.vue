@@ -95,6 +95,7 @@ export default {
                 }
             }).then((response) => {
                     pending_data.value = response.data.return_data;
+                    sessionStorage.setItem('add_friend_unread_count', 0);
                     console.log(response);
                 }
             ).catch((error) => {

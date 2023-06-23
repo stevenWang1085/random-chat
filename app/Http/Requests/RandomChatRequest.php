@@ -26,7 +26,7 @@ class RandomChatRequest extends FormRequest
         switch ($this->route()->getActionMethod()) {
             case 'startRandom':
                 $rules = [
-                    'gender' => 'required|string|in:all,male,female'
+                    'select_gender' => 'required|string|in:all,male,female'
                 ];
                 break;
             case 'leaveRoom':

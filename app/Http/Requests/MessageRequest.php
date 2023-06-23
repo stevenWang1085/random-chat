@@ -27,12 +27,12 @@ class MessageRequest extends FormRequest
         switch ($this->route()->getActionMethod()) {
             case 'getRoomMessage':
                 $rules = [
-                    'room_id'      => 'required|integer|exists:rooms,id',
+                    'room_id'      => 'required|integer',
                 ];
                 break;
             case 'store':
                 $rules = [
-                    'room_id'      => 'required|integer|exists:rooms,id',
+                    'room_id'      => 'required|integer',
                     'from_user_id' => 'required|integer|exists:users,id',
                     'to_user_id'   => 'required|integer|exists:users,id',
                     'message'      => 'required|string'

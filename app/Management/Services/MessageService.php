@@ -9,6 +9,7 @@ use App\Management\Repositories\MessageRepository;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 class MessageService
 {
@@ -21,18 +22,23 @@ class MessageService
 
     public function getRoomMessage($filters)
     {
-        $chat_tag = Cache::tags(["room_{$filters['room_id']}"]);
-        $chat_dates = Cache::get("room_{$filters['room_id']}_dates") ?? [];
-        $chat_data = [];
-        foreach ($chat_dates as $date) {
-            if ($chat_tag->has($date)) {
-                $chat_data[] = $chat_tag->get($date);
-            } else {
-                $chat_data[] = $this->repository->getRoomChatData($filters['room_id'], $date);
+        if ($filters['room_type'] == 'random') {
+            $chat_data = Redis::lrange("random_room_message_room_id_{$filters['room_id']}", 0, -1);
+            $chat_data = collect($chat_data)->transform(function ($node) {
+                return json_decode($node);
+            });
+        } else {
+            #取得聊天日期
+            $chat_data = [];
+            $personal_room_key = "personal_room_id_{$filters['room_id']}_dates";
+            $all_dates = Redis::sMembers($personal_room_key);
+            foreach ($all_dates as $value) {
+                $message = Redis::lrange("personal_room_message_room_id_{$filters['room_id']}_date_{$value}", 0, -1);
+                $message = collect($message)->transform(function ($node) {
+                    return json_decode($node);
+                });
+                $chat_data[$value] = $message;
             }
-        }
-        if (count($chat_data) == 0) {
-            $chat_data = $this->repository->getRoomChatData($filters['room_id'], null);
         }
 
         return $chat_data;
@@ -50,28 +56,31 @@ class MessageService
             'created_at'   => $now->toDateTimeString(),
             'updated_at'   => $now->toDateTimeString()
         ];
-        #儲存聊天日期
-        $chat_dates_key = "room_{$filters['room_id']}_dates";
-        if (Cache::has($chat_dates_key)) {
-            $dates = Cache::get($chat_dates_key);
-            if (! isset($dates[$chat_date])) {
-                Cache::put($chat_dates_key, array_merge($dates, [$chat_date => $chat_date]));
+        if ($filters['room_type'] == 'random') {
+            #檢查room_id
+            if (Redis::exists("random_room_id_{$filters['room_id']}")) {
+                #確認為正確使用者
+                $room_users = json_decode(Redis::get("random_room_id_{$filters['room_id']}"));
+                if (count(array_diff($room_users->user_id, [$data['from_user_id'], $data['to_user_id']])) != 0) {
+                    //房間用戶錯誤
+                    return ['code' => 605, 'data' => null];
+                } else {
+                    Redis::rpush("random_room_message_room_id_{$filters['room_id']}", json_encode($data));
+                }
+            } else {
+                //房間不存在
+                return ['code' => 606, 'data' => null];
             }
         } else {
-            Cache::put($chat_dates_key, [$chat_date => $chat_date]);
-        }
-        #儲存聊天資料
-        $chat_tag = Cache::tags(["room_{$filters['room_id']}"]);
-        if ($chat_tag->has($chat_date)) {
-            $chat_data = $chat_tag->get($chat_date);
-            array_push($chat_data, $data);
-            $chat_tag->put($chat_date, $chat_data);
-        } else {
-            $chat_tag->put($chat_date, [$data]);
+            #romm_type = personal
+            #儲存聊天日期
+            $personal_room_key = "personal_room_id_{$filters['room_id']}_dates";
+            Redis::sadd($personal_room_key, $chat_date);
+            Redis::rpush("personal_room_message_room_id_{$filters['room_id']}_date_{$chat_date}", json_encode($data));
         }
         #發送訊息至聊天室事件
         event(new RandomChatMessageEvent($data));
 
-        return $data;
+        return ['code' => 202, 'data' => $data];
     }
 }

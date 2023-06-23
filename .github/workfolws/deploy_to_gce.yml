@@ -1,0 +1,50 @@
+name: Laravel CD - testing and deploy to GCE
+
+on:
+  push:
+    branches:
+      - develop
+env:
+  PROJECT_ID: ${{ secrets.GCE_PROJECT }}
+  GCE_INSTANCE: ${{ secrets.GCE_INSTANCE }}
+  GCE_INSTANCE_ZONE: ${{ secrets.GCE_INSTANCE_ZONE }}
+  ONLINE_DOCKER_IMAGE: ${{ secrets.ONLINE_DOCKER_IMAGE }}
+
+jobs:
+  laravel-cd:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Actions checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Gcloud
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: '390.0.0'
+          service_account_key: ${{ secrets.GCE_SA_KEY }}
+          project_id: ${{ secrets.GCE_PROJECT }}
+
+      - name: Setup actions auth
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: ${{ secrets.GCE_SA_KEY }}
+
+      - name: Deploy to GCE
+        uses: 'google-github-actions/ssh-compute@v0'
+        with:
+          instance_name: ${{ secrets.GCE_INSTANCE }}
+          zone: ${{ secrets.GCE_INSTANCE_ZONE }}
+          ssh_private_key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+          command: |
+            sudo chmod 777 /var/run/docker.sock
+            cd /var/www/chat-system
+            sudo chmod -R 777 .git
+            sudo git config --global --add safe.directory /var/www/random-chat
+            sudo git pull
+            sudo cp .env.cd .env
+            docker-compose down
+            docker pull $ONLINE_DOCKER_IMAGE/chat-system:latest
+            docker-compose --env-file .env.cd up -d
+            docker-compose exec -T chat npm run build

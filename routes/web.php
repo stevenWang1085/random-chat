@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +13,14 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/google/redirect', [UserController::class, 'googleRedirect']);
+
+//Route::get('/callback', [UserController::class, 'googleLogin']);
+
+Route::get('/callback', function () {
+    return view('callback');
+});
 
 Route::get('/login', function () {
     return view('login');

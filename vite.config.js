@@ -29,6 +29,7 @@ export default ({ mode }) => {
                     'resources/js/random.js',
                     'resources/js/register.js',
                     'resources/js/websocket.js',
+                    'resources/js/callback.js',
                 ],
                 refresh: true,
             }),

@@ -31,4 +31,11 @@ class UserRepository
             ->first();
     }
 
+    public function editProfile($user_id, $update_data)
+    {
+        return $this->model::query()
+            ->where('id', $user_id)
+            ->update($update_data);
+    }
+
 }
