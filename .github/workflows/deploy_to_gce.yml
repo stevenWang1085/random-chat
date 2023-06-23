@@ -49,4 +49,5 @@ jobs:
             docker-compose --env-file .env.cd up -d
             docker-compose exec -T chat composer install
             docker-compose exec -T chat npm run build
+            docker restart supervisor-server
 
