@@ -47,4 +47,6 @@ jobs:
             docker-compose down
             docker pull $ONLINE_DOCKER_IMAGE/chat-system:latest
             docker-compose --env-file .env.cd up -d
+            docker-compose exec -T chat composer install
             docker-compose exec -T chat npm run build
+
