@@ -41,7 +41,7 @@ jobs:
             sudo chmod 777 /var/run/docker.sock
             cd /var/www/chat-system
             sudo chmod -R 777 .git
-            sudo git config --global --add safe.directory /var/www/chat-system
+            sudo git config --global --add safe.directory /var/www/random-chat
             sudo git pull
             sudo cp .env.cd .env
             docker-compose down
