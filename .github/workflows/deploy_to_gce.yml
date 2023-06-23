@@ -3,7 +3,7 @@ name: Laravel CD - testing and deploy to GCE
 on:
   push:
     branches:
-      - develop
+      - master
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
   GCE_INSTANCE: ${{ secrets.GCE_INSTANCE }}
