@@ -12,7 +12,7 @@ class UserFriendTransformer
         $data->transform(function ($node) {
             #取得最後聊天訊息
             $all_dates = Redis::sMembers("personal_room_id_{$node['room_id']}_dates");
-            $latest_date = end($all_dates);
+            $latest_date = max($all_dates);
             $chat_data = Redis::lrange("personal_room_message_room_id_{$node['room_id']}_date_{$latest_date}", 0, -1);
             $latest_message = json_decode(end($chat_data));
             $node->latest_message = $latest_message->message ?? '';
