@@ -7,10 +7,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <!--    聊天區塊-->
-    <section v-if="chat_div" class="gradient-custom ttt">
+    <section v-if="chat_div" class="gradient-custom scrollspy-example">
         <div class="container py-5">
             <div class="row">
-                <div class="scrollspy-example">
+                <div >
                     <ul v-for="(value, index) in random_message" :key="index" class="list-unstyled">
                         <div  v-if="value.from_user_id == user_id" class="">
                             <li class="d-flex justify-content-between mb-lg-4">
