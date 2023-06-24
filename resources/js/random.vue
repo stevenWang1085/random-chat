@@ -216,6 +216,10 @@ export default {
                     match_user_alert.value = true;
                     match_user_alert_class.value = 'alert alert-danger alert-dismissible fade show';
                     match_user_alert_message.value = '對方已經離開，請點選離開。'
+                    nextTick(function () {
+                        let scroll = document.querySelector('.scrollspy-example')
+                        scroll.scrollHeight = scroll.scrollTop;
+                    })
                     leave_show_status.value = true;
                     function_show.value = false;
                     Echo.leave(random_chat_room_channel_name);
