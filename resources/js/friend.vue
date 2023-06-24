@@ -46,10 +46,10 @@
             </div>
         </div>
     </section>
-    <section v-if="show_friend_chat" class="gradient-custom">
+    <section v-if="show_friend_chat" class="gradient-custom scrollspy-example">
         <div class="container py-5">
             <div class="row">
-                <div class="scrollspy-example">
+                <div>
                     <ul v-for="(value, index) in chat_data" :key="index" class="list-unstyled">
                         <div  v-if="value.from_user_id == user_id" class="">
                             <li class="d-flex justify-content-between mb-lg-4">
