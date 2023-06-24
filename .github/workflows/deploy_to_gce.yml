@@ -39,6 +39,7 @@ jobs:
           ssh_private_key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
           command: |
             sudo chmod 777 /var/run/docker.sock
+            sudo chmod -R 777 storage
             cd /var/www/random-chat
             sudo chmod -R 777 .git
             sudo git config --global --add safe.directory /var/www/random-chat

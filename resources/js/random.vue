@@ -216,6 +216,7 @@ export default {
                     match_user_alert.value = true;
                     match_user_alert_class.value = 'alert alert-danger alert-dismissible fade show';
                     match_user_alert_message.value = '對方已經離開，請點選離開。'
+                    alert('對方已經離開隨機聊天，請點選離開。');
                     nextTick(function () {
                         let scroll = document.querySelector('.scrollspy-example')
                         scroll.scrollHeight = scroll.scrollTop;
