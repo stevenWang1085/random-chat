@@ -17,7 +17,8 @@
         "predis/predis": "^2.1",
         "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-short-schedule": "^1.5",
-        "twbs/bootstrap-icons": "^1.10"
+        "twbs/bootstrap-icons": "^1.10",
+        "ext-curl": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

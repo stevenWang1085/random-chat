@@ -26,7 +26,8 @@ class UserFriendRepository
                 to_u.account as to_account,
                 to_u.username as to_username,
                 to_u.gender as to_gender,
-                user_friends.created_at as send_at
+                user_friends.created_at as send_at,
+                status
             ')
             ->from('user_friends')
             ->join('users as from_u', 'from_u.id', '=', 'user_friends.from_user_id')

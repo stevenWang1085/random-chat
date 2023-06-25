@@ -11,12 +11,20 @@ class UserFriendTransformer
     {
         $data->transform(function ($node) {
             #取得最後聊天訊息
-            $all_dates = Redis::sMembers("personal_room_id_{$node['room_id']}_dates");
-            $latest_date = max($all_dates);
-            $chat_data = Redis::lrange("personal_room_message_room_id_{$node['room_id']}_date_{$latest_date}", 0, -1);
-            $latest_message = json_decode(end($chat_data));
-            $node->latest_message = $latest_message->message ?? '';
-            $node->latest_send_at = $latest_message->created_at ?? '';
+            if ($node->status == 'confirm') {
+                $all_dates = Redis::sMembers("personal_room_id_{$node['room_id']}_dates");
+                if (count($all_dates) != 0) {
+                    $latest_date = max($all_dates);
+                    $chat_data = Redis::lrange("personal_room_message_room_id_{$node['room_id']}_date_{$latest_date}", 0, -1);
+                    $latest_message = json_decode(end($chat_data));
+                    $node->latest_message = $latest_message->message ?? '';
+                    $node->latest_send_at = $latest_message->created_at ?? '';
+                    return $node;
+                } else {
+                    $node->latest_message = '';
+                    $node->latest_send_at = '';
+                }
+            }
             return $node;
         });
         #點擊審核列表，清空未讀訊息
