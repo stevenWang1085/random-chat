@@ -5,6 +5,7 @@ namespace App\Management\Services;
 use App\Management\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService
 {
@@ -33,12 +34,18 @@ class UserService
             $filters['password'] = password_hash($filters['password'], PASSWORD_DEFAULT);
             $user = $this->repository->register($filters);
         }
-        Auth::login($user);
+        $token = JWTAuth::attempt([
+            'account' => $filters['account'],
+            'password' => $filters['password'],
+        ]);
+        
+        Auth::login(JWTAuth::user());
 
         return [
             'user_id'                 => Auth::id(),
             'username'                => $user['username'],
             'gender'                  => $user['gender'],
+            'token'                   => $token,
             'add_friend_unread_count' => Redis::get("user_id_{$user['id']}_unread_add_friend_count"),
         ];
     }
@@ -47,12 +54,13 @@ class UserService
     {
         $user = $this->repository->findUser($filters['account']);
         if ($user === null || password_verify($filters['password'], $user['password']) === false) return false;
-        Auth::attempt($filters);
-        Auth::login(Auth::user());
+        $token = JWTAuth::attempt($filters);
+        Auth::login(JWTAuth::user());
 
         return [
             'user_id'                 => Auth::id(),
             'username'                => $user['username'],
+            'token'                   => $token,
             'add_friend_unread_count' => Redis::get("user_id_{$user['id']}_unread_add_friend_count")
         ];
     }

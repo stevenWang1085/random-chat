@@ -185,6 +185,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -209,7 +210,9 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Redis' => \Illuminate\Support\Facades\Redis::class
+        'Redis' => \Illuminate\Support\Facades\Redis::class,
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 

@@ -16,8 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/google/redirect', [UserController::class, 'googleRedirect']);
 
-//Route::get('/callback', [UserController::class, 'googleLogin']);
-
 Route::get('/callback', function () {
     return view('callback');
 });
@@ -41,11 +39,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/friend', function () {
         return view('friend');
     });
-
     Route::get('/friend_check', function () {
         return view('friend_check');
     });
-
     Route::get('/friend_chat', function () {
         return view('friend_chat');
     });

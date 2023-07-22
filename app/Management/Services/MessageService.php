@@ -31,13 +31,23 @@ class MessageService
             #取得聊天日期
             $chat_data = [];
             $personal_room_key = "personal_room_id_{$filters['room_id']}_dates";
-            $all_dates = Redis::sMembers($personal_room_key);
-            foreach ($all_dates as $value) {
-                $message = Redis::lrange("personal_room_message_room_id_{$filters['room_id']}_date_{$value}", 0, -1);
-                $message = collect($message)->transform(function ($node) {
-                    return json_decode($node);
+            if (Redis::exists($personal_room_key) == 0) {
+                #search db
+                $chat_data = $this->repository->getRoomChatData($filters['room_id']);
+                $chat_data = $chat_data->transform(function ($node) {
+                    $node->chat_date = Carbon::parse($node['created_at'])->toDateString();
+                    return $node;
                 });
-                $chat_data[$value] = $message;
+                $chat_data = $chat_data->groupBy('chat_date');
+            } else {
+                $all_dates = Redis::sMembers($personal_room_key);
+                foreach ($all_dates as $value) {
+                    $message = Redis::lrange("personal_room_message_room_id_{$filters['room_id']}_date_{$value}", 0, -1);
+                    $message = collect($message)->transform(function ($node) {
+                        return json_decode($node);
+                    });
+                    $chat_data[$value] = $message;
+                }
             }
         }
 

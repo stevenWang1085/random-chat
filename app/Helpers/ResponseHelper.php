@@ -94,6 +94,12 @@ trait ResponseHelper
                     'status_message' => '未配對',
                 ];
                 break;
+            case 207:
+                $response = [
+                    'http_status_code' => 200,
+                    'status_message' => '送出邀請成功',
+                ];
+                break;
             case 300:
                 $response = [
                     'http_status_code' => 200,

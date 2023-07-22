@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "ext-curl": "*",
         "askedio/laravel-soft-cascade": "^10.0",
         "beyondcode/laravel-websockets": "^1.14",
         "dyrynda/laravel-cascade-soft-deletes": "^4.2",
@@ -18,7 +19,7 @@
         "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-short-schedule": "^1.5",
         "twbs/bootstrap-icons": "^1.10",
-        "ext-curl": "*"
+        "tymon/jwt-auth": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
