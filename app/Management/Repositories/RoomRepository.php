@@ -25,4 +25,11 @@ class RoomRepository
             ->where('id', $room_id)
             ->delete();
     }
+
+    public function getAllRoomByType($type)
+    {
+        return $this->model::query()
+            ->where('type', $type)
+            ->get();
+    }
 }

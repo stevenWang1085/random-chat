@@ -81,7 +81,6 @@
                             </li>
                         </div>
                     </ul>
-
                 </div>
             </div>
         </div>
@@ -259,11 +258,8 @@ export default {
                 to_user_id: to_user_id.value,
                 status: 'pending'
             }).then((response) => {
-                    alert('送出成功');
-                    console.log(response);
                 }
             ).catch((error) => {
-                alert(error.response.data.status_message);
                 console.log(error)
             });
         }
@@ -281,25 +277,25 @@ export default {
         }
 
         function sendMessage() {
-            axios.post('api/v1/message/send', {
-                room_id: random_room_id.value,
-                from_user_id: user_id,
-                to_user_id: to_user_id.value,
-                message: chat_message.value,
-                room_type: 'random'
-            }).then((response) => {
-                console.log(response);
-                chat_message.value = '';
-                }
-            ).catch((error) => {
-                console.log(error)
-            });
+            if (chat_message.value !== '') {
+                axios.post('api/v1/message/send', {
+                    room_id: random_room_id.value,
+                    from_user_id: user_id,
+                    to_user_id: to_user_id.value,
+                    message: chat_message.value,
+                    room_type: 'random'
+                }).then((response) => {
+                        chat_message.value = '';
+                    }
+                ).catch((error) => {
+                    console.log(error)
+                });
+            }
         }
 
         function checkRandomChat() {
             // 檢查是否已在配對
             axios.post('api/v1/random/check', {}).then((response) => {
-                    console.log(response);
                     if (response.data.code === '1205') {
                         //已配對
                         const result = response.data.return_data;
@@ -342,7 +338,6 @@ export default {
                         room_id: random_room_id.value
                     })
                         .then((response) => {
-                            console.log(response);
                             console.log('leave:' + random_chat_room_channel_name)
                             Echo.leave(random_chat_room_channel_name);
                             setTimeout(function () {
@@ -362,7 +357,6 @@ export default {
                     room_type: "random"
                 }
             }).then((response) => {
-                    console.log(response);
                     if (response.data.return_data.length > 0) {
                         random_message.value = response.data.return_data;
                     }
@@ -386,7 +380,6 @@ export default {
             axios.post('api/v1/random/start', {
                 select_gender: gender.value
             }).then((response) => {
-                    console.log(response);
                 }
             ).catch((error) => {
                 console.log(error)
@@ -398,7 +391,6 @@ export default {
             start_random_show.value = '開始聊天';
             axios.post('api/v1/random/cancel')
                 .then((response) => {
-                    console.log(response);
                 }
             ).catch((error) => {
                 console.log(error)
@@ -456,7 +448,7 @@ export default {
 
 .scrollspy-example {
     position: relative;
-    height: 750px;
+    height: 850px;
     overflow: auto;
 }
 </style>

@@ -13,12 +13,11 @@ class MessageRepository
         $this->model = new Message();
     }
 
-    public function getRoomChatData($room_id, $date)
+    public function getRoomChatData($room_id, $date = null)
     {
         return $this->model::query()
             ->where('room_id', $room_id)
             ->where(function ($q) use ($room_id, $date){
-                $q->where('room_id', $room_id);
                 if (! is_null($date)) {
                     $start_at = $date . ' 00:00:00';
                     $end_at = $date . ' 23:59:59';
@@ -27,5 +26,11 @@ class MessageRepository
             })
             ->orderBy('created_at')
             ->get();
+    }
+
+    public function store($data)
+    {
+        return $this->model::query()
+            ->insert($data);
     }
 }

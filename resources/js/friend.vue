@@ -196,7 +196,6 @@ export default {
         async function getRoomChatData(room_id) {
             chat_user_name.value = sessionStorage.getItem('chat_user_name');
             await axios.get('api/v1/message/room/' + room_id).then((response) => {
-                    console.log(response);
                     if (response.data.return_data.length > 0) {
                         chat_data.value = response.data.return_data;
                     }
@@ -213,22 +212,22 @@ export default {
         }
 
         function sendMessage() {
-            axios.post('api/v1/message/send', {
-                room_id: send_chat_data.room_id,
-                from_user_id: send_chat_data.from_user_id,
-                to_user_id: send_chat_data.to_user_id,
-                message: chat_message.value
-            }).then((response) => {
-                    console.log(response);
-                    chat_message.value = '';
-                }
-            ).catch((error) => {
-                console.log(error)
-            });
+            if (chat_message.value !== '' && chat_message.value !== null) {
+                axios.post('api/v1/message/send', {
+                    room_id: send_chat_data.room_id,
+                    from_user_id: send_chat_data.from_user_id,
+                    to_user_id: send_chat_data.to_user_id,
+                    message: chat_message.value
+                }).then((response) => {
+                        chat_message.value = '';
+                    }
+                ).catch((error) => {
+                    console.log(error)
+                });
+            }
         }
 
         function getKeyUpForWhisper(e) {
-            console.log(personal_room_channel_name);
             if (e.code !== 'Enter' && e.code !== 'NumpadEnter') {
                 setTimeout(function () {
                     Echo.private(personal_room_channel_name)
@@ -248,7 +247,6 @@ export default {
                 personal_room_channel_name = 'random-chat-room-' + node.room_id;
                 Echo.private(personal_room_channel_name)
                     .listen('.random-chat-room', function (e) {
-                        console.log(e);
                         let to_user_id = sessionStorage.getItem('chat_user_id');
                         let to_room_id = sessionStorage.getItem('room_id');
                         if ( to_user_id == e.to_user_id || node.room_id == to_room_id) {

@@ -56,6 +56,7 @@ export default {
                 }
                 localStorage.setItem('user_id', response.data.return_data.user_id);
                 localStorage.setItem('username', response.data.return_data.username);
+                localStorage.setItem('token', response.data.return_data.token);
                 sessionStorage.setItem('add_friend_unread_count', response.data.return_data.add_friend_unread_count);
 
                 }

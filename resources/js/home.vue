@@ -78,6 +78,23 @@ export default {
         let add_friend_unread_count = ref(0);
         username.value = localStorage.getItem('username');
         add_friend_unread_count.value = sessionStorage.getItem('add_friend_unread_count');
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+        axios.interceptors.response.use(
+            function(response) {
+                if (response.data.status_message === '送出邀請成功') {
+                    alert('送出邀請成功');
+                }
+                return response;
+            },
+            function(error) {
+                if (error.response.status === 401) {
+                    alert('權證過期，請重新登入。');
+                    location.href = '/login';
+                } else {
+                    alert(error.response.data.status_message);
+                }
+            }
+        );
         onMounted(function () {
             Echo.private(personal_channel_name)
                 .listen('.unread_add_friend_event', function (e) {

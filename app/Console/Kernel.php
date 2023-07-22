@@ -24,6 +24,10 @@ class Kernel extends ConsoleKernel
         $shortSchedule->command('match:user_v2')
             ->withoutOverlapping()
             ->everySeconds(3);
+
+        $shortSchedule->command('update:chat_data')
+            ->withoutOverlapping()
+            ->everySeconds(60 * 10);
     }
 
 

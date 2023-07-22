@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 class Message extends Model
 {
@@ -21,8 +23,19 @@ class Message extends Model
         'data_insert_at'
     ];
 
+    protected $dates = [
+        'created_at'
+    ];
+
+    protected $dateFormat = [];
+
     public function relationRoom()
     {
         return $this->belongsTo(Room::class, 'room_id', 'id');
+    }
+
+    protected function serializeDate(DateTimeInterface $date) : string
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

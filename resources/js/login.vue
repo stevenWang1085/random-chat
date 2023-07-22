@@ -64,10 +64,11 @@ export default {
                 account: member.account,
                 password: member.password
             }).then((response) => {
-                console.log(response);
-                localStorage.setItem('user_id', response.data.return_data.user_id);
-                localStorage.setItem('username', response.data.return_data.username);
-                sessionStorage.setItem('add_friend_unread_count', response.data.return_data.add_friend_unread_count);
+                let user_data =  response.data.return_data;
+                localStorage.setItem('user_id', user_data.user_id);
+                localStorage.setItem('username', user_data.username);
+                localStorage.setItem('token', user_data.token);
+                sessionStorage.setItem('add_friend_unread_count', user_data.add_friend_unread_count);
                 location.href = '/random';
                 }
             ).catch((error) => {

@@ -96,7 +96,6 @@ export default {
             }).then((response) => {
                     pending_data.value = response.data.return_data;
                     sessionStorage.setItem('add_friend_unread_count', 0);
-                    console.log(response);
                 }
             ).catch((error) => {
                 console.log(error)
@@ -119,7 +118,6 @@ export default {
             axios.patch('api/v1/friend/' + user_friend_id + '/update', {
                 status: status
             }).then((response) => {
-                    console.log(response);
                     getCheckList('pending')
                 }
             ).catch((error) => {
@@ -142,7 +140,7 @@ export default {
 
 .scrollspy-example {
     position: relative;
-    height: 750px;
+    height: 850px;
     overflow: auto;
 }
 

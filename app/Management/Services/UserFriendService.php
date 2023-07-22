@@ -59,7 +59,7 @@ class UserFriendService
                     $filters['status'],
                     null
                 );
-                return ['code' => 200];
+                return ['code' => 207];
             }
         }
     }

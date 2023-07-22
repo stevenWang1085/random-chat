@@ -17,18 +17,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::middleware(['auth'])->prefix('v1')->group(function () {
+Route::middleware(['jwt.verify'])->prefix('v1')->group(function () {
     Route::prefix('user')->group(function () {
-        Route::post('/register', [UserController::class, 'register'])->withoutMiddleware('auth');
-        Route::post('/login', [UserController::class, 'login'])->withoutMiddleware('auth');
+        Route::post('/register', [UserController::class, 'register'])->withoutMiddleware('jwt.verify');
+        Route::post('/login', [UserController::class, 'login'])->withoutMiddleware('jwt.verify');
         Route::post('/logout', [UserController::class, 'logout']);
         Route::patch('edit/profile', [UserController::class, 'editProfile']);
-        Route::get('/google/login', [UserController::class, 'googleLogin'])->withoutMiddleware('auth');
+        Route::get('/google/login', [UserController::class, 'googleLogin'])->withoutMiddleware('jwt.verify');
     });
 
     Route::prefix('friend')->group(function () {
