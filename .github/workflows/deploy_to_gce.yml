@@ -45,7 +45,7 @@ jobs:
             sudo chmod -R 777 .git
             sudo git config --global --add safe.directory /var/www/random-chat
             sudo git pull
-            docker-compose exec -T chat php artisan env:decrypt --key=${{ secret.PROJECT_ENV_KEY }} --env=production --force
+            docker-compose exec -T chat php artisan env:decrypt --key=${{ secrets.PROJECT_ENV_KEY }} --env=production --force
             sudo cp .env.production .env
             docker-compose down
             docker pull $ONLINE_DOCKER_IMAGE/chat-system:latest
