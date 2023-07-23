@@ -272,7 +272,7 @@ export default {
                             message:'對方正在輸入中...',
                             user_id: user_id
                         });
-                }, 100);
+                }, 500);
             }
         }
 
