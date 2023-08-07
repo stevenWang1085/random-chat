@@ -27,7 +27,7 @@ class UserController extends Controller
     {
         try {
             DB::beginTransaction();
-            #新增google use data
+            #新增google user data
             $google_user = Socialite::driver('google')->stateless()->user();
             $filters = [
                 'account' => $google_user->email,

@@ -32,7 +32,6 @@ class UserFriendService
         $check_from_friend = $this->repository->getFriendStatus($filters['from_user_id'], $filters['to_user_id']);
         $check_to_friend = $this->repository->getFriendStatus($filters['to_user_id'], $filters['from_user_id']);
 
-
         if (! is_null($check_from_friend)) {
             if ($check_from_friend['status'] == 'confirm') {
                 return  ['code' => 701];
