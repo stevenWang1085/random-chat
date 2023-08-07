@@ -22,8 +22,14 @@ jobs:
           php-version: '8.2'
       - name: Actions checkout
         uses: actions/checkout@v2
-      - name: Build the stack
-        run: docker-compose up -d
+      - name: Copy .env
+        run: |
+          php artisan env:decrypt --key=${{ secrets.PROJECT_ENV_KEY }} --env=testing --force
+          cp .env.testing .env
+      - name: see .env
+        run: cat .env
+#      - name: Build the stack
+#        run: docker-compose --env-file .env.testing up -d
 #      - name: Run the build process with Docker
 #        uses: addnab/docker-run-action@v3
 #        with:
