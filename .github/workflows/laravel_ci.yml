@@ -23,12 +23,12 @@ jobs:
       - name: Actions checkout
         uses: actions/checkout@v2
       - name: Run the build process with Docker
-          uses: addnab/docker-run-action@v3
-          with:
-              image: ${{ secrets.ONLINE_DOCKER_IMAGE }}/chat-system:latest
-              options: -v ${{ github.workspace }}:/var/www
-              run: |
-                  composer install
+        uses: addnab/docker-run-action@v3
+        with:
+            image: ${{ secrets.ONLINE_DOCKER_IMAGE }}/chat-system:latest
+            options: -v ${{ github.workspace }}:/var/www
+            run: |
+                composer install
 #      - name: Copy .env
 #        run: |
 #          php artisan env:decrypt --key=${{ secrets.PROJECT_ENV_KEY }} --env=testing --force
