@@ -32,8 +32,7 @@ jobs:
         run: cat .env
       - name: Build the stack
         run: |
-          docker pull $ONLINE_DOCKER_IMAGE/chat-system:latest
-          docker-compose up -d
+          docker-compose --env-file .env up -d
       - name: see docker
         run: docker ps
       - name: Execute tests via PHPUnit
