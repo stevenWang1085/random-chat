@@ -37,8 +37,7 @@ jobs:
         run: docker ps
       - name: Execute tests via PHPUnit
         run: |
-          docker-compose exec -T chat php artisan cache:clear
-          docker-compose exec -T chat php artisan config:clear
+          docker-compose exec -T chat php artisan config:cache
           docker-compose exec -T chat php artisan test
 #      - name: Run the build process with Docker
 #        uses: addnab/docker-run-action@v3
