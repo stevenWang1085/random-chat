@@ -29,15 +29,15 @@ jobs:
           cp .env.testing .env
       - name: see .env
         run: cat .env
+      - name: see docker
+        run: docker ps
       - name: Build the stack
         run: |
           docker pull $ONLINE_DOCKER_IMAGE/chat-system:latest
           docker-compose up -d
       - name: Execute tests via PHPUnit
         run: |
-          docker-compose exec -T chat php artisan key:generate
           docker-compose exec -T chat php artisan config:clear
-          docker-compose exec -T chat php artisan migrate
           docker-compose exec -T chat php artisan test
 #      - name: Run the build process with Docker
 #        uses: addnab/docker-run-action@v3
