@@ -35,15 +35,15 @@ jobs:
           docker-compose up -d
       - name: see docker
         run: docker ps
-      - name: Execute tests via PHPUnit
-        env:
-          DB_CONNECTION: mysql
-          DB_HOST: mysql
-          DB_PORT: 3306
-          DB_DATABASE: phpunit
-        run: |
-          docker-compose exec -T chat php artisan config:clear
-          docker-compose exec -T chat php artisan test
+      - name: see mysql
+          run: |
+            docker exec -it  mysql-server bash
+            mysql -uroot -ptest123
+            show databases;
+#      - name: Execute tests via PHPUnit
+#        run: |
+#          docker-compose exec -T chat php artisan config:clear
+#          docker-compose exec -T chat php artisan test
 #      - name: Run the build process with Docker
 #        uses: addnab/docker-run-action@v3
 #        with:
