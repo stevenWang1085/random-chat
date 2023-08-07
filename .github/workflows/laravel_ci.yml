@@ -28,7 +28,8 @@ jobs:
             image: ${{ secrets.ONLINE_DOCKER_IMAGE }}/chat-system:latest
             options: -v ${{ github.workspace }}:/var/www
             run: |
-                ls -al
+                cd /var/www
+                docker-compose up -d
 #      - name: Copy .env
 #        run: |
 #          php artisan env:decrypt --key=${{ secrets.PROJECT_ENV_KEY }} --env=testing --force
