@@ -35,9 +35,10 @@ jobs:
           docker-compose up -d
       - name: Execute tests via PHPUnit
         run: |
-          docker-compose exec chat php artisan config:clear
-          docker-compose exec chat php artisan migrate
-          docker-compose exec chat php artisan test
+          docker-compose exec -T chat php artisan key:generate
+          docker-compose exec -T chat php artisan config:clear
+          docker-compose exec -T chat php artisan migrate
+          docker-compose exec -T chat php artisan test
 #      - name: Run the build process with Docker
 #        uses: addnab/docker-run-action@v3
 #        with:
