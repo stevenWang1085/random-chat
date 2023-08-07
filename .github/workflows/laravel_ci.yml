@@ -37,7 +37,7 @@ jobs:
         run: docker ps
       - name: see mysql
         run: |
-          docker exec -it  mysql-server bash
+          docker exec -it -T mysql-server bash
           mysql -uroot -ptest123
           show databases;
 #      - name: Execute tests via PHPUnit
