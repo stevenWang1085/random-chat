@@ -40,7 +40,7 @@ jobs:
         run: docker ps
       - name: Execute tests via PHPUnit
         run: |
-          docker-compose exec -T chat php artisan migrate:status
+          sudo docker-compose exec -T chat php artisan migrate:status
 #          docker-compose exec -T chat cat phpunit.xml
 #          docker-compose exec -T chat php artisan config:cache
 #      - name: Run the build process with Docker
