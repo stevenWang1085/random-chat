@@ -27,6 +27,7 @@ jobs:
           composer install
           php artisan env:decrypt --key=${{ secrets.PROJECT_ENV_KEY }} --env=testing --force
           cp .env.testing .env
+          php artisan jwt:secret
       - name: see .env
         run: cat .env
       - name: Build the stack
@@ -37,6 +38,10 @@ jobs:
         run: docker ps
       - name: Execute tests via PHPUnit
         run: |
+          ls -al
+          docker-compose exec -T chat php artisan env:decrypt --key=${{ secrets.PROJECT_ENV_KEY }} --env=testing --force
+          docker-compose exec -T chat cp .env.testing .env
+          docker-compose exec -T chat php artisan jwt:secret
           docker-compose exec -T chat php artisan config:cache
           docker-compose exec -T chat php artisan test
 #      - name: Run the build process with Docker
