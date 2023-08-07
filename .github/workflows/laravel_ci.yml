@@ -36,6 +36,11 @@ jobs:
       - name: see docker
         run: docker ps
       - name: Execute tests via PHPUnit
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: mysql
+          DB_PORT: 3306
+          DB_DATABASE: phpunit
         run: |
           docker-compose exec -T chat php artisan config:clear
           docker-compose exec -T chat php artisan test
