@@ -2,9 +2,6 @@ version: '3.1'
 
 services:
   chat:
-    build:
-      context: ./dockerfiles/
-      dockerfile: web.dockerfile
     image: wang52016/chat-system:latest
     container_name: web-server
     ports:

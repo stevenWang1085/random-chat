@@ -30,13 +30,15 @@ jobs:
       - name: see .env
         run: cat .env
       - name: Build the stack
-        run: docker-compose up -d
-      - name: see docker
-        run: docker ps
-      - name: Execute tests via PHPUnit
         run: |
-          docker-compose exec -T chat composer install
-          docker-compose exec -T chat php artisan test
+          docker pull $ONLINE_DOCKER_IMAGE/chat-system:latest
+          docker-compose up -d
+#      - name: see docker
+#        run: docker ps
+#      - name: Execute tests via PHPUnit
+#        run: |
+#          docker-compose exec -T chat composer install
+#          docker-compose exec -T chat php artisan test
 #      - name: Run the build process with Docker
 #        uses: addnab/docker-run-action@v3
 #        with:
