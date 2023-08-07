@@ -45,25 +45,6 @@ class RandomChatService
             #配對中
             return ['code' => 204];
         }
-//        #檢查是否已經排隊
-//        if (Cache::has('random_online_user')) {
-//            $user_status = collect($this->online_random_user)->where([
-//                'status'  => 'pending',
-//                'user_id' => $filters['user_id']
-//            ])->values();
-//            if ($user_status->isEmpty()) {
-//                //$this->processRandomUser($filters);
-//                dispatch(new storeRandomOnlineUserJob($filters));
-//                return ['code' => 203];
-//            } else {
-//                return ['code' => 204];
-//            }
-//        } else {
-//            //$this->processRandomUser($filters);
-//            dispatch(new storeRandomOnlineUserJob($filters));
-//        }
-
-        //return ['code' => 203];
     }
 
     private function processRandomUser($user_data)

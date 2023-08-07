@@ -14,17 +14,15 @@ class RandomChatMessageEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    private $room_id;
+    public $room_id;
 
-    private $from_user_id;
+    public $from_user_id;
 
-    private $to_user_id;
+    public $to_user_id;
 
-    private $message;
+    public $message;
 
-    private $message_id;
-
-    private $created_at;
+    public $created_at;
 
     /**
      * Create a new event instance.

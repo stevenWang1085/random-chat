@@ -15,9 +15,9 @@ class UnReadEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    private $type;
+    public $type;
 
-    private $user_id;
+    public $user_id;
 
     /**
      * Create a new event instance.

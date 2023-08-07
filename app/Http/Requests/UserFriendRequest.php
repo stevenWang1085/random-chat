@@ -33,7 +33,6 @@ class UserFriendRequest extends FormRequest
                 break;
             case 'store':
                 $rules = [
-//                    'from_user_id' => 'required|integer|exists:users,id',
                     'to_user_id'   => 'required|integer|exists:users,id|notIn:' . Auth::id(),
                     'status'       => 'required|string|in:pending'
                 ];
