@@ -24,6 +24,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Copy .env
         run: |
+          composer install
           php artisan env:decrypt --key=${{ secrets.PROJECT_ENV_KEY }} --env=testing --force
           cp .env.testing .env
       - name: see .env
