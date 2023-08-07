@@ -29,8 +29,10 @@ jobs:
           cp .env.testing .env
       - name: see .env
         run: cat .env
-#      - name: Build the stack
-#        run: docker-compose --env-file .env.testing up -d
+      - name: Build the stack
+        run: docker-compose up -d
+      - name: see docker
+        run: docker ps
 #      - name: Run the build process with Docker
 #        uses: addnab/docker-run-action@v3
 #        with:
