@@ -24,24 +24,25 @@ jobs:
         uses: actions/checkout@v2
       - name: Copy .env
         run: |
-          composer install
-          php artisan env:decrypt --key=${{ secrets.PROJECT_ENV_KEY }} --env=testing --force
-          cp .env.testing .env
-          php artisan key:generate
-      - name: see .env
-        run: cat .env
-      - name: Build the stack
-        run: |
-          docker-compose --env-file .env up -d
-          php artisan env:decrypt --key=${{ secrets.PROJECT_ENV_KEY }} --env=testing --force
-          cp .env.testing .env
-          php artisan key:generate
-      - name: see docker
-        run: docker ps
-      - name: Execute tests via PHPUnit
-        run: |
-          docker-compose exec -T chat php artisan config:cache
-          docker-compose exec -T chat php artisan migrate:status
+          ls -al
+#          composer install
+#          php artisan env:decrypt --key=${{ secrets.PROJECT_ENV_KEY }} --env=testing --force
+#          cp .env.testing .env
+#          php artisan key:generate
+#      - name: see .env
+#        run: cat .env
+#      - name: Build the stack
+#        run: |
+#          docker-compose --env-file .env up -d
+#          php artisan env:decrypt --key=${{ secrets.PROJECT_ENV_KEY }} --env=testing --force
+#          cp .env.testing .env
+#          php artisan key:generate
+#      - name: see docker
+#        run: docker ps
+#      - name: Execute tests via PHPUnit
+#        run: |
+#          docker-compose exec -T chat php artisan config:cache
+#          docker-compose exec -T chat php artisan migrate:status
 #          docker-compose exec -T chat cat phpunit.xml
 #      - name: Run the build process with Docker
 #        uses: addnab/docker-run-action@v3
