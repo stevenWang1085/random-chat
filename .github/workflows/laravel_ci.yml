@@ -43,7 +43,7 @@ jobs:
         run: |
           docker-compose exec -T chat composer install
           docker-compose exec -T chat php artisan config:cache
-          docker-compose exec -T chat php artisan migrate:status
+          docker-compose exec -T chat php artisan test
 #          docker-compose exec -T chat cat phpunit.xml
 #      - name: Run the build process with Docker
 #        uses: addnab/docker-run-action@v3
