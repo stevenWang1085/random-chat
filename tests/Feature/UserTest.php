@@ -13,9 +13,9 @@ class UserTest extends TestCase
     public function testRegister()
     {
         $user_data = [
-            'account'  => fake()->userName,
-            'password' => fake()->password,
-            'username' => fake()->userName,
+            'account'  => 'test123456',
+            'password' => 'test12345679',
+            'username' => 'test123456',
             'gender'   => fake()->randomElement(['male', 'female'])
         ];
         $response = $this->post('api/v1/user/register', $user_data);
