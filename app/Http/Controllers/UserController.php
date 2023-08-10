@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Management\Services\UserService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -11,6 +13,9 @@ use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends Controller
 {
+    /**
+     * @var UserService
+     */
     private $service;
 
     public function __construct()
@@ -18,11 +23,21 @@ class UserController extends Controller
         $this->service = new UserService();
     }
 
+    /**
+     * google auth 登入跳轉
+     *
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function googleRedirect()
     {
         return Socialite::driver('google')->redirect();
     }
 
+    /**
+     * google auth 登入
+     *
+     * @return JsonResponse
+     */
     public function googleLogin()
     {
         try {
@@ -55,7 +70,7 @@ class UserController extends Controller
      * 註冊
      *
      * @param UserRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function register(UserRequest $request)
     {
@@ -87,7 +102,7 @@ class UserController extends Controller
      * 登入
      *
      * @param UserRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function login(UserRequest $request)
     {
@@ -114,7 +129,7 @@ class UserController extends Controller
      * 登出
      *
      * @param UserRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function logout(UserRequest $request)
     {
@@ -129,6 +144,12 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * 編輯基本資訊
+     *
+     * @param \App\Http\Requests\UserRequest $request
+     * @return JsonResponse
+     */
     public function editProfile(UserRequest $request)
     {
         try {

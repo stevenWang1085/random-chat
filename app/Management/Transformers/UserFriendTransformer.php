@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\Redis;
 
 class UserFriendTransformer
 {
+    /**
+     * 轉換好友清單資訊
+     *
+     * @param $data
+     * @param $filters
+     * @return mixed
+     */
     public function transformFriendList($data, $filters)
     {
         $data->transform(function ($node) {

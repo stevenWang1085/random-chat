@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RandomChatRequest;
 use App\Management\Services\RandomChatService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class RandomChatController extends Controller
 {
+    /**
+     * @var RandomChatService
+     */
     private $service;
 
     public function __construct()
@@ -16,6 +20,12 @@ class RandomChatController extends Controller
         $this->service = new RandomChatService();
     }
 
+    /**
+     * 開始隨機配對
+     *
+     * @param RandomChatRequest $request
+     * @return JsonResponse
+     */
     public function startRandom(RandomChatRequest $request)
     {
         $user = Auth::user();
@@ -39,6 +49,11 @@ class RandomChatController extends Controller
         return $response;
     }
 
+    /**
+     * 取消等待隨機配對
+     *
+     * @return JsonResponse
+     */
     public function cancelRandom()
     {
         $filters = [
@@ -55,6 +70,11 @@ class RandomChatController extends Controller
         return $response;
     }
 
+    /**
+     * 檢查隨機聊天狀態
+     *
+     * @return JsonResponse
+     */
     public function checkRandomChat()
     {
         $filters = [
@@ -73,6 +93,12 @@ class RandomChatController extends Controller
         return $response;
     }
 
+    /**
+     * 離開隨機配對聊天室
+     *
+     * @param RandomChatRequest $request
+     * @return JsonResponse
+     */
     public function leaveRandomRoom(RandomChatRequest $request)
     {
         $filters = [

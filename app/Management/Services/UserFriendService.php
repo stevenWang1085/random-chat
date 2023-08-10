@@ -6,12 +6,25 @@ use App\Events\UnReadEvent;
 use App\Management\Repositories\RoomRepository;
 use App\Management\Repositories\UserFriendRepository;
 use App\Management\Repositories\UserRoomRepository;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Redis;
 
 class UserFriendService
 {
+    /**
+     * @var UserFriendRepository
+     */
     private $repository;
+
+    /**
+     * @var RoomRepository
+     */
     private $room_repository;
+
+    /**
+     * @var UserRoomRepository
+     */
     private $user_room_repository;
 
     public function __construct()
@@ -21,12 +34,24 @@ class UserFriendService
         $this->user_room_repository = new UserRoomRepository();
     }
 
-    public function index($filters)
+    /**
+     * 取得好友清單
+     *
+     * @param array $filters
+     * @return Builder[]|Collection
+     */
+    public function index(array $filters)
     {
         return $this->repository->getList($filters['user_id'], $filters['status']);
     }
 
-    public function store($filters)
+    /**
+     * 發送好友申請
+     *
+     * @param array $filters
+     * @return int[]
+     */
+    public function store(array $filters)
     {
         #檢查是否已經送過或早已是好友
         $check_from_friend = $this->repository->getFriendStatus($filters['from_user_id'], $filters['to_user_id']);
@@ -63,7 +88,12 @@ class UserFriendService
         }
     }
 
-    public function update($filters)
+    /**
+     * 更新好友狀態
+     *
+     * @param array $filters
+     */
+    public function update(array $filters)
     {
         #更新好友狀態
         $result = $this->repository->updateStatus($filters['user_friend_id'], $filters['status']);

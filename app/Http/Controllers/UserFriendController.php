@@ -5,13 +5,21 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserFriendRequest;
 use App\Management\Services\UserFriendService;
 use App\Management\Transformers\UserFriendTransformer;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class UserFriendController extends Controller
 {
+    /**
+     * @var UserFriendService
+     */
     private $service;
+
+    /**
+     * @var UserFriendTransformer
+     */
     private $transform;
 
     public function __construct()
@@ -20,6 +28,13 @@ class UserFriendController extends Controller
         $this->transform = new UserFriendTransformer();
     }
 
+    /**
+     * 取得好友清單
+     *
+     * @param UserFriendRequest $request
+     * @param $user_id
+     * @return JsonResponse
+     */
     public function list(UserFriendRequest $request, $user_id)
     {
         try {
@@ -46,6 +61,12 @@ class UserFriendController extends Controller
         return $response;
     }
 
+    /**
+     * 發送好友申請
+     *
+     * @param UserFriendRequest $request
+     * @return JsonResponse
+     */
     public function store(UserFriendRequest $request)
     {
         try {
@@ -72,6 +93,12 @@ class UserFriendController extends Controller
         return $response;
     }
 
+    /**
+     * 更新好友狀態
+     *
+     * @param UserFriendRequest $request
+     * @return JsonResponse
+     */
     public function update(UserFriendRequest $request)
     {
         try {
