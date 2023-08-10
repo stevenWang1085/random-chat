@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - v1.*
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
   GCE_INSTANCE: ${{ secrets.GCE_INSTANCE }}
