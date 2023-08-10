@@ -3,9 +3,14 @@
 namespace App\Management\Repositories;
 
 use App\Models\Message;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class MessageRepository
 {
+    /**
+     * @var Message
+     */
     private $model;
 
     public function __construct()
@@ -13,6 +18,13 @@ class MessageRepository
         $this->model = new Message();
     }
 
+    /**
+     * 取得聊天室資訊
+     *
+     * @param $room_id
+     * @param null $date
+     * @return Builder[]|Collection
+     */
     public function getRoomChatData($room_id, $date = null)
     {
         return $this->model::query()
@@ -28,6 +40,12 @@ class MessageRepository
             ->get();
     }
 
+    /**
+     * 儲存訊息
+     *
+     * @param $data
+     * @return bool
+     */
     public function store($data)
     {
         return $this->model::query()

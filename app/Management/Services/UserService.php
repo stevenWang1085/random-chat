@@ -9,6 +9,9 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService
 {
+    /**
+     * @var UserRepository
+     */
     private $repository;
 
     public function __construct()
@@ -16,7 +19,14 @@ class UserService
         $this->repository = new UserRepository();
     }
 
-    public function register($filters, $type = null)
+    /**
+     * 註冊
+     *
+     * @param array $filters
+     * @param null $type
+     * @return array|false|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+     */
+    public function register(array $filters, $type = null)
     {
         $user = $this->repository->findUser($filters['account']);
         if ($type == 'google') return $this->googleLogin($user, $filters);
@@ -28,7 +38,14 @@ class UserService
         }
     }
 
-    public function googleLogin($user, $filters)
+    /**
+     * google 登入
+     *
+     * @param $user
+     * @param array $filters
+     * @return array
+     */
+    public function googleLogin($user, array $filters)
     {
         if (is_null($user)) {
             $filters['password'] = password_hash($filters['password'], PASSWORD_DEFAULT);
@@ -38,7 +55,7 @@ class UserService
             'account' => $filters['account'],
             'password' => $filters['password'],
         ]);
-        
+
         Auth::login(JWTAuth::user());
 
         return [
@@ -50,7 +67,13 @@ class UserService
         ];
     }
 
-    public function login($filters)
+    /**
+     * 一般登入
+     *
+     * @param array $filters
+     * @return array|false
+     */
+    public function login(array $filters)
     {
         $user = $this->repository->findUser($filters['account']);
         if ($user === null || password_verify($filters['password'], $user['password']) === false) return false;
@@ -65,7 +88,12 @@ class UserService
         ];
     }
 
-    public function editProfile($filters)
+    /**
+     * 編輯基本資料
+     *
+     * @param array $filters
+     */
+    public function editProfile(array $filters)
     {
         $update_data = $filters;
         $this->repository->editProfile(Auth::id(), $update_data);

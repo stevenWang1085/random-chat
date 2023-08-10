@@ -3,9 +3,14 @@
 namespace App\Management\Repositories;
 
 use App\Models\UserRoom;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserRoomRepository
 {
+    /**
+     * @var UserRoom
+     */
     private $model;
 
     public function __construct()
@@ -13,23 +18,24 @@ class UserRoomRepository
         $this->model = new UserRoom();
     }
 
+    /**
+     * 新增使用者與房間資訊
+     *
+     * @param $data
+     * @return bool
+     */
     public function insert($data)
     {
         return $this->model::query()
             ->insert($data);
     }
 
-    public function getUserRoomFromType($user_id, $room_type)
-    {
-        return $this->model::query()
-            ->with('relationRoom')
-            ->whereHas('relationRoom', function ($q) use ($room_type){
-                $q->where('type', $room_type);
-            })
-            ->where('user_id', $user_id)
-            ->first();
-    }
-
+    /**
+     * 透過房間編號取得房間與使用者資訊
+     *
+     * @param $room_id
+     * @return Builder[]|Collection
+     */
     public function getRoomFromRoomId($room_id)
     {
         return $this->model::query()

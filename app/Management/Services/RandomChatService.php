@@ -3,30 +3,23 @@
 namespace App\Management\Services;
 
 use App\Events\LeaveRandomRoomEvent;
-use App\Jobs\storeRandomOnlineUserJob;
-use App\Management\Repositories\RoomRepository;
-use App\Management\Repositories\UserRoomRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
 class RandomChatService
 {
-    private $online_random_user;
-
-    private $user_room_repository;
-
-    private $room_repository;
-
     public function __construct()
     {
-        $this->online_random_user = Cache::get('random_online_user');
-        $this->user_room_repository = new UserRoomRepository();
-        $this->room_repository = new RoomRepository();
     }
 
-    public function storeRandomOnlineUser($filters)
+    /**
+     * 儲存隨機配對使用者狀態
+     *
+     * @param array $filters
+     * @return int[]
+     */
+    public function storeRandomOnlineUser(array $filters)
     {
         #檢查是否已經排隊
         if (is_null(Redis::hget('random_pending', 'user_id_'.$filters['user_id']))) {
@@ -38,6 +31,7 @@ class RandomChatService
                 #未配對
                 $filters['created_at'] =  Carbon::now()->toDateTimeString();
                 $data = json_encode($filters);
+                #塞入配對等待區
                 Redis::hset('random_pending', 'user_id_'.$filters['user_id'], $data);
                 return ['code' => 203];
             }
@@ -47,28 +41,13 @@ class RandomChatService
         }
     }
 
-    private function processRandomUser($user_data)
-    {
-        $now = Carbon::now();
-        $cache_key = "random_online_user";
-        $data = [
-            'user_id'       => $user_data['user_id'],
-            'account'       => $user_data['account'],
-            'status'        => $user_data['status'],
-            'gender'        => $user_data['gender'],
-            'select_gender' => $user_data['select_gender'],
-            'created_at'    => $now->toDateTimeString()
-        ];
-        if (Cache::has($cache_key)) {
-            $online_data = Cache::get($cache_key);
-            array_push($online_data, $data);
-            Cache::put($cache_key, $online_data);
-        } else {
-            Cache::put($cache_key, [$data]);
-        }
-    }
-
-    public function checkRandomChat($filters)
+    /**
+     * 檢查隨機聊天狀態
+     *
+     * @param array $filters
+     * @return array
+     */
+    public function checkRandomChat(array $filters)
     {
         #檢查是否已在配對
         if (is_null(Redis::hget('random_pending', 'user_id_'.$filters['user_id']))) {
@@ -92,15 +71,26 @@ class RandomChatService
         }
     }
 
-    public function cancelRandom($filters)
+    /**
+     * 取消等待隨機配對
+     *
+     * @param array $filters
+     */
+    public function cancelRandom(array $filters)
     {
+        #從配對等待區移除
         Redis::hdel('random_pending', 'user_id_' . $filters['user_id']);
     }
 
-    public function leaveRoom($filters)
+    /**
+     * 離開配對聊天室
+     *
+     * @param array $filters
+     */
+    public function leaveRoom(array $filters)
     {
         $user_id = Auth::id();
-        #清除cache
+        #清除配對資訊，與聊天紀錄
         Redis::del('random_complete', "user_id_{$filters['to_user_id']}");
         Redis::del('random_complete', "user_id_{$user_id}");
         Redis::del("random_room_id_{$filters['room_id']}");

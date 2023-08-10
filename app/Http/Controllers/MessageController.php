@@ -10,7 +10,14 @@ use Illuminate\Support\Facades\Log;
 
 class MessageController extends Controller
 {
+    /**
+     * @var MessageService
+     */
     private $service;
+
+    /**
+     * @var MessageTransformer
+     */
     private $transformer;
 
     public function __construct()

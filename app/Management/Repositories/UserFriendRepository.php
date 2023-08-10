@@ -3,9 +3,15 @@
 namespace App\Management\Repositories;
 
 use App\Models\UserFriend;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class UserFriendRepository
 {
+    /**
+     * @var UserFriend
+     */
     private $model;
 
     public function __construct()
@@ -13,6 +19,13 @@ class UserFriendRepository
         $this->model = new UserFriend();
     }
 
+    /**
+     * 取得好友清單
+     *
+     * @param $user_id
+     * @param $status
+     * @return Builder[]|Collection
+     */
     public function getList($user_id, $status)
     {
         return $this->model::query()
@@ -43,6 +56,15 @@ class UserFriendRepository
             ->get();
     }
 
+    /**
+     * 發送好友申請
+     *
+     * @param $from_user_id
+     * @param $to_user_id
+     * @param $status
+     * @param $room_id
+     * @return Builder|Model
+     */
     public function store($from_user_id, $to_user_id, $status, $room_id)
     {
         return $this->model::query()
@@ -54,6 +76,13 @@ class UserFriendRepository
             ]);
     }
 
+    /**
+     * 更新好友狀態
+     *
+     * @param $user_friend_id
+     * @param $status
+     * @return Builder|Model
+     */
     public function updateStatus($user_friend_id, $status)
     {
         return $this->model::query()
@@ -65,9 +94,15 @@ class UserFriendRepository
                     'status'  => $status,
                 ]
             );
-
     }
 
+    /**
+     * 更新好友資訊
+     *
+     * @param $user_friend_id
+     * @param $update_data
+     * @return int
+     */
     public function updateWhere($user_friend_id, $update_data)
     {
         return $this->model::query()
@@ -75,6 +110,13 @@ class UserFriendRepository
             ->update($update_data);
     }
 
+    /**
+     * 取得好友資訊
+     *
+     * @param $from_user_id
+     * @param $to_user_id
+     * @return Builder|Model|object|null
+     */
     public function getFriendStatus($from_user_id, $to_user_id)
     {
         return $this->model::query()
