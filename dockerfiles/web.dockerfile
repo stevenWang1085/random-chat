@@ -25,7 +25,7 @@ RUN add-apt-repository -y ppa:ondrej/php && \
                 php8.2-mysql \
                 php8.2-gd \
                 php8.2-bcmath \
-                php8.2-json \
+                php-json \
                 php8.2-readline \
                 php8.2-tokenizer \
                 libapache2-mod-php\
