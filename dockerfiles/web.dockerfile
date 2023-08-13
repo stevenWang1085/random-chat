@@ -16,18 +16,18 @@ RUN add-apt-repository -y ppa:ondrej/php && \
     apt-get install -y apache2 \
                 git \
                 vim \
-                php8.2 \
-                php8.2-curl \
-                php8.2-mbstring \
-                php8.2-cli \
-                php8.2-xml \
-                php8.2-zip \
-                php8.2-mysql \
-                php8.2-gd \
-                php8.2-bcmath \
+                php \
+                php-curl \
+                php-mbstring \
+                php-cli \
+                php-xml \
+                php-zip \
+                php-mysql \
+                php-gd \
+                php-bcmath \
                 php-json \
-                php8.2-readline \
-                php8.2-tokenizer \
+                php-readline \
+                php-tokenizer \
                 libapache2-mod-php\
                 supervisor\
                 composer

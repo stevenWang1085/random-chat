@@ -41,10 +41,10 @@ return [
                 'scheme' => env('PUSHER_SCHEME', 'https'),
                 'encrypted' => true,
                 'useTLS' => env('PUSHER_SCHEME', 'https') === 'https',
-//                'curl_options' => [
-//                    CURLOPT_SSL_VERIFYHOST => 0,
-//                    CURLOPT_SSL_VERIFYPEER => 0,
-//                ],
+                'curl_options' => [
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                ],
             ],
             //'options' => [
 //                'host' => env('PUSHER_HOST') ?: 'api-'.env('PUSHER_APP_CLUSTER', 'mt1').'.pusher.com',
