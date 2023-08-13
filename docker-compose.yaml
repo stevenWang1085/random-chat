@@ -7,7 +7,6 @@ services:
     ports:
       - ${DOCKER_APACHE_80}:80
       - ${VITE_PORT}:5173
-      - ${LARAVEL_WEBSOCKETS_PORT}:6001
     volumes:
       - ./:/var/www/Laravel
     depends_on:
@@ -36,15 +35,15 @@ services:
     command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
     volumes:
       - ./data/redis:/data
-#  supervisor:
-#    image: wang52016/chat-system:latest
-#    container_name: supervisor-server
-#    ports:
-#      - ${LARAVEL_WEBSOCKETS_PORT}:6001
-#    volumes:
-#      - ./:/var/www/Laravel
-#    command: supervisord -n
-#    depends_on:
-#      - mysql
-#      - redis
-#      - chat
+  supervisor:
+    image: wang52016/chat-system:latest
+    container_name: supervisor-server
+    ports:
+      - ${LARAVEL_WEBSOCKETS_PORT}:6001
+    volumes:
+      - ./:/var/www/Laravel
+    command: supervisord -n
+    depends_on:
+      - mysql
+      - redis
+      - chat
