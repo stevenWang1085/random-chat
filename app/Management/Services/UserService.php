@@ -47,15 +47,15 @@ class UserService
      */
     public function googleLogin($user, array $filters)
     {
+        $attempt_password = $filters['password'];
         if (is_null($user)) {
-            $filters['password'] = password_hash($filters['password'], PASSWORD_DEFAULT);
+            $filters['password'] = password_hash($attempt_password, PASSWORD_DEFAULT);
             $user = $this->repository->register($filters);
         }
         $token = JWTAuth::attempt([
             'account' => $filters['account'],
-            'password' => $filters['password'],
+            'password' => $attempt_password,
         ]);
-
         Auth::login(JWTAuth::user());
 
         return [

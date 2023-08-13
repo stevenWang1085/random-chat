@@ -74,3 +74,4 @@ jobs:
             docker-compose exec -T chat npm run build
             docker-compose exec -T chat service supervisor stop
             docker-compose exec -T chat service supervisor start
+            docker-compose exec -T chat jwt:secret

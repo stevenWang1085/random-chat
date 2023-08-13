@@ -66,6 +66,7 @@ export default {
         }
 
         function editGender() {
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
             axios.patch('api/v1/user/edit/profile', {
                 gender: gender.value
             }).then((response) => {
