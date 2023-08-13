@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - feature/*
 env:
   ONLINE_DOCKER_IMAGE: ${{ secrets.ONLINE_DOCKER_IMAGE }}
   PROJECT_ENV_KEY: ${{ secrets.PROJECT_ENV_KEY }}
