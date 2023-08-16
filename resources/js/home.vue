@@ -78,6 +78,7 @@ export default {
         let add_friend_unread_count = ref(0);
         username.value = localStorage.getItem('username');
         add_friend_unread_count.value = sessionStorage.getItem('add_friend_unread_count');
+        axios.defaults.withCredentials = true;
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
         axios.interceptors.response.use(
             function(response) {

@@ -110,9 +110,6 @@ return [
      * You can see all available options at: http://php.net/manual/en/context.ssl.php
      */
     'ssl' => [
-        'verify_peer' => false,
-        'allow_self_signed' => true,
-        'verify_depth' => 0,
         /*
          * Path to local certificate file on filesystem. It must be a PEM encoded file which
          * contains your certificate and private key. It can optionally contain the
