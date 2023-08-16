@@ -72,6 +72,4 @@ jobs:
             docker-compose --env-file .env up -d
             docker-compose exec -T chat composer install
             docker-compose exec -T chat npm run build
-            docker-compose exec -T chat service supervisor stop
-            docker-compose exec -T chat service supervisor start
             docker-compose exec -T chat php artisan jwt:secret
