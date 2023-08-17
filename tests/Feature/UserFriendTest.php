@@ -20,6 +20,7 @@ class UserFriendTest extends TestCase
 
     public function testList()
     {
+        Event::fake();
         $user_friend_data = $this->setFriendData();
         $this->patch("api/v1/friend/{$user_friend_data['id']}/update", [
             'status' => 'confirm'
@@ -55,6 +56,7 @@ class UserFriendTest extends TestCase
 
     public function testConfirmUpdate()
     {
+        Event::fake();
         $user_friend_data = $this->setFriendData();
         $response = $this->patch("api/v1/friend/{$user_friend_data['id']}/update", [
             'status' => 'confirm'
@@ -84,6 +86,7 @@ class UserFriendTest extends TestCase
 
     public function testRejectUpdate()
     {
+        Event::fake();
         $user_friend_data = $this->setFriendData();
         $response = $this->patch("api/v1/friend/{$user_friend_data['id']}/update", [
             'status' => 'reject'
