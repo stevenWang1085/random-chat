@@ -2,6 +2,8 @@
 
 namespace App\Management\Transformers;
 
+use Illuminate\Support\Collection;
+
 class MessageTransformer
 {
     /**
@@ -18,8 +20,9 @@ class MessageTransformer
             $result = $data->sortBy('created_at')->values()->all();
         } else {
             #personal
-            foreach ($data as $date => $value) {
-                $result = array_merge($result, $value->toArray());
+            foreach (collect($data)->sortKeys()->values() as $date => $value) {
+                $value = $value->sortBy('created_at')->values()->all();
+                $result = array_merge($result, $value);
             }
         }
 
