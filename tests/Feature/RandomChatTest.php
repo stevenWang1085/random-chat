@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Events\LeaveRandomRoomEvent;
 use App\Events\SuccessMatchEvent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -84,6 +85,7 @@ class RandomChatTest extends TestCase
 
     public function testLeaveRandomRoom()
     {
+        Event::fake();
         $match_user = $this->setRandomMatchUser();
         $room_id =  Redis::get('current_random_room_id');
         $request = [
@@ -102,5 +104,6 @@ class RandomChatTest extends TestCase
         $response
             ->assertOk()
             ->assertJsonPath('code', '1401');
+        Event::assertDispatched(LeaveRandomRoomEvent::class);
     }
 }

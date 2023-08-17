@@ -2,7 +2,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>登入</title>
+    <title>聊聊-登入</title>
+    <link rel="icon" href="{{ asset('/image/chat.ico') }}">
 {{--    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">--}}
 {{--    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>--}}
 
