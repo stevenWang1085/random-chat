@@ -54,38 +54,13 @@
                         </div>
                     </ul>
                     <ul class="list-unstyled">
-                        <div v-if="typing && typing_data.user_id == user_id" class="">
-                            <li class="d-flex justify-content-between mb-lg-4">
-                                <div class="card w-50 start-50" style="background: honeydew">
-                                    <div class="card-body">
-                                        <p class="mb-0">
-                                            {{typing_data.message}}
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                        </div>
-                        <div v-if="typing && typing_data.user_id != user_id" class="">
-                            <li class="d-flex justify-content-between mb-lg-4">
-                                <div class="card w-50 start-0" style="background: white">
-                                    <div class="card-header small d-flex justify-content-between p-3"
-                                         style="border-bottom: 1px solid rgba(255,255,255,.3);">
-                                        <p class="fw-bold mb-0">{{match_username}}</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="mb-0">
-                                            {{typing_data.message}}
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                        </div>
                     </ul>
                 </div>
             </div>
         </div>
 
         <div class="input-group fixed-bottom">
+            <div v-if="typing" class=""><span>對方輸入中...</span></div>
             <div class="input-group input-group-lg">
                 <div v-if="function_show" class="btn-group dropup">
                     <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -272,7 +247,7 @@ export default {
                             message:'對方正在輸入中...',
                             user_id: user_id
                         });
-                }, 500);
+                }, 1000);
             }
         }
 
@@ -448,7 +423,7 @@ export default {
 
 .scrollspy-example {
     position: relative;
-    height: 850px;
+    height: 800px;
     overflow: auto;
 }
 </style>
