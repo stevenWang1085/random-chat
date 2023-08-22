@@ -8,7 +8,7 @@
     @vite('resources/js/random.js')
 </head>
 {{--style="background: #f8f9fa"--}}
-<body style="background-color: #eee; padding-top: 56px">
+<body style="background-color: #eee; padding-top: 80px">
 <div id="random" class="random_chat">
 
 </div>
