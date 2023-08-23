@@ -26,16 +26,16 @@ class UserRequest extends FormRequest
         switch ($this->route()->getActionMethod()) {
             case 'register':
                 $rules = [
-                    'account'  => 'required|string|min:6|unique:users',
-                    'password' => 'required|min:6',
+                    'account'  => 'required|regex:/(^[a-zA-Z0-9 ]*$)/|min:6|unique:users',
+                    'password' => 'required|regex:/(^[a-zA-Z0-9 ]*$)/|min:6',
                     'username' => 'required|min:1|unique:users',
                     'gender'   => 'required|in:male,female'
                 ];
                 break;
             case 'login':
                 $rules = [
-                    'account'  => 'required|string|min:6',
-                    'password' => 'required|min:6',
+                    'account'  => 'required|regex:/(^[a-zA-Z0-9 ]*$)/|min:6',
+                    'password' => 'required|regex:/(^[a-zA-Z0-9 ]*$)/|min:6',
                 ];
                 break;
 

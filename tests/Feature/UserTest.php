@@ -30,9 +30,9 @@ class UserTest extends TestCase
     public function testLogin()
     {
         $user_data = [
-            'account'  => fake()->name,
-            'password' => fake()->password,
-            'username' => fake()->userName,
+            'account'  => 'test567789',
+            'password' => 'test567789987789',
+            'username' => 'test567789adasda',
             'gender'   => fake()->randomElement(['male', 'female'])
         ];
         $this->post('api/v1/user/register', [
