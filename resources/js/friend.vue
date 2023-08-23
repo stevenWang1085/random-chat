@@ -191,7 +191,8 @@ export default {
                     room_id: send_chat_data.room_id,
                     from_user_id: send_chat_data.from_user_id,
                     to_user_id: send_chat_data.to_user_id,
-                    message: chat_message.value
+                    message: chat_message.value,
+                    room_type: 'personal'
                 }).then((response) => {
                         chat_message.value = '';
                     }
@@ -209,7 +210,7 @@ export default {
                             message:'對方正在輸入中...',
                             user_id: user_id
                         });
-                }, 1000);
+                }, 2200);
             }
         }
 

@@ -247,7 +247,7 @@ export default {
                             message:'對方正在輸入中...',
                             user_id: user_id
                         });
-                }, 1000);
+                }, 2200);
             }
         }
 

@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CheckRoom;
+use App\Rules\CheckUser;
 use Illuminate\Foundation\Http\FormRequest;
-use Symfony\Component\Console\Input\Input;
 
 class MessageRequest extends FormRequest
 {
@@ -32,10 +33,19 @@ class MessageRequest extends FormRequest
                 break;
             case 'store':
                 $rules = [
-                    'room_id'      => 'required|integer',
-                    'from_user_id' => 'required|integer|exists:users,id',
+                    'room_id'      => [
+                        'required',
+                        'integer',
+                        new CheckRoom(request()->all())
+                    ],
+                    'from_user_id' => [
+                        'required',
+                        'integer',
+                        'exists:users,id'
+                    ],
                     'to_user_id'   => 'required|integer|exists:users,id',
-                    'message'      => 'required|string'
+                    'message'      => 'required|string',
+                    'room_type'    => 'required|string|in:personal,random'
                 ];
                 break;
             default:
