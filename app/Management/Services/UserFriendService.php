@@ -123,6 +123,9 @@ class UserFriendService
             $this->repository->updateWhere($filters['user_friend_id'], [
                 'room_id' => $room->id
             ]);
+            Redis::set("personal_room_id_{$room->id}", json_encode([
+                'user_id' => [$result->to_user_id, $result->from_user_id]
+            ]));
         }
     }
 }
