@@ -3,9 +3,9 @@
     <section v-if="show_friend_list" class="gradient-custom">
         <div class="container py-5">
             <div class="row">
-                <div class=" scrollspy-example">
-                    <h5 class="font-weight-bold mb-3 text-center text-lg-start">好友清單</h5>
+                <h5 class="font-weight-bold mb-3 text-center text-lg-start">好友清單</h5>
                     <div class="card">
+                        <div class="scrollspy-example ">
                         <div class="card-body">
                             <ul v-if="friend_data.length === 0" class="list-unstyled mb-3">
                                 <li class="p-2 border-bottom" style="background-color: #eee;">
@@ -41,8 +41,8 @@
                                 </li>
                             </ul>
                         </div>
+                        </div>
                     </div>
-                </div>
             </div>
         </div>
     </section>

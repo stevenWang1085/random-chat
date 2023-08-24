@@ -35,7 +35,7 @@
     @vite('resources/css/app.css')
 </head>
 {{--style="background: #f8f9fa"--}}
-<body id="friend_chat" class="friend_chat" style="background-color: #eee; padding-top: 56px">
+<body id="friend_chat" class="friend_chat" style="background-color: #eee; padding-top: 36px">
 
 </body>
 </html>
