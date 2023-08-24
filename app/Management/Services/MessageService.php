@@ -52,6 +52,18 @@ class MessageService
                     return $node;
                 });
                 $chat_data = $chat_data->groupBy('chat_date');
+                #insert redis
+                foreach ($chat_data as $key => $value) {
+                    if (! Redis::exists("personal_room_id_{$filters['room_id']}")) {
+                        Redis::set("personal_room_id_{$filters['room_id']}", json_encode([
+                            'user_id' => [$value->first()['from_user_id'], $value->first()['to_user_id']]
+                        ]));
+                    }
+                    Redis::sadd($personal_room_key, $key);
+                    foreach ($value as $chat_value) {
+                        Redis::rpush("personal_room_message_room_id_{$filters['room_id']}_date_{$key}", json_encode($chat_value));
+                    }
+                }
             } else {
                 $all_dates = Redis::sMembers($personal_room_key);
                 foreach ($all_dates as $value) {

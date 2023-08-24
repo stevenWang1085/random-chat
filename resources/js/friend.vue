@@ -169,7 +169,11 @@ export default {
 
         async function getRoomChatData(room_id) {
             chat_user_name.value = sessionStorage.getItem('chat_user_name');
-            await axios.get('api/v1/message/room/' + room_id).then((response) => {
+            await axios.get('api/v1/message/room/' + room_id, {
+                params: {
+                    room_type:'personal'
+                }
+            }).then((response) => {
                     if (response.data.return_data.length > 0) {
                         chat_data.value = response.data.return_data;
                     }
