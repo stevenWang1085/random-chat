@@ -33,6 +33,12 @@ class User extends Authenticatable implements JWTSubject
         'password',
     ];
 
+    public function relationFriend()
+    {
+        return $this->hasMany(UserFriend::class, 'from_user_id', 'id')
+            ->where('status', 'confirm');
+    }
+
     public function getJWTIdentifier()
     {
         // TODO: Implement getJWTIdentifier() method.
