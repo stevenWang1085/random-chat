@@ -101,8 +101,8 @@ class RandomChatService
     {
         $user_id = Auth::id();
         #清除配對資訊，與聊天紀錄
-        Redis::del('random_complete', "user_id_{$filters['to_user_id']}");
-        Redis::del('random_complete', "user_id_{$user_id}");
+        Redis::hdel('random_complete', "user_id_{$filters['to_user_id']}");
+        Redis::hdel('random_complete', "user_id_{$user_id}");
         Redis::del("random_room_id_{$filters['room_id']}");
         Redis::del("random_room_message_room_id_{$filters['room_id']}");
         #寄送離開事件
