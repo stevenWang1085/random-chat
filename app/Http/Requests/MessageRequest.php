@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Rules\CheckRoom;
-use App\Rules\CheckUser;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MessageRequest extends FormRequest
@@ -27,8 +26,17 @@ class MessageRequest extends FormRequest
     {
         switch ($this->route()->getActionMethod()) {
             case 'getRoomMessage':
+                $data = [
+                    'room_id' =>  $this->route()->parameters()['room_id'],
+                    'room_type' => request()->input('room_type')
+                ];
                 $rules = [
-                    'room_id'      => 'required|integer',
+                    'room_id'      => [
+                        'required',
+                        'integer',
+                        new CheckRoom($data, true)
+                    ],
+                    'room_type'    => 'required|string|in:personal,random'
                 ];
                 break;
             case 'store':
