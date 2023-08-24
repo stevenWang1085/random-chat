@@ -8,7 +8,7 @@
     @vite('resources/js/friend_check.js')
 </head>
 {{--background-color: #eee--}}
-<body id="friend_check" class="friend_check" style="background-color: #eee; padding-top: 56px;">
+<body id="friend_check" class="friend_check" style="background-color: #eee; padding-top: 36px;">
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>

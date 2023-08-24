@@ -2,9 +2,9 @@
 <home></home>
     <div class="container py-5">
         <div class="row">
-            <div class=" scrollspy-example">
                 <h5 class="font-weight-bold mb-3 text-center text-lg-start">好友邀請</h5>
-                <div class="card">
+                <div class=" scrollspy-example">
+                    <div class="card">
                     <div v-if="pending_data.length === 0" class="card-body">
                         <ul class="list-unstyled mb-2">
                             <li class="p-2 border-bottom" style="background-color: #eee;">
@@ -73,7 +73,7 @@
 <!--                        </ul>-->
                     </div>
                 </div>
-            </div>
+                </div>
         </div>
     </div>
 </template>

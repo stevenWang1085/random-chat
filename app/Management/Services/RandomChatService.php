@@ -30,6 +30,16 @@ class RandomChatService
             } else {
                 #未配對
                 $filters['created_at'] =  Carbon::now()->toDateTimeString();
+                #取得好友
+                $friend_key = "user_id_{$filters['user_id']}_friends";
+                if (! Redis::exists($friend_key)) {
+                    $user_friends = Auth::user()->load(['relationFriend']);
+                    if (! is_null($user_friends['relationFriend'])) {
+                        foreach ($user_friends['relationFriend'] as $value) {
+                            Redis::sadd($friend_key, $value['to_user_id']);
+                        }
+                    }
+                }
                 $data = json_encode($filters);
                 #塞入配對等待區
                 Redis::hset('random_pending', 'user_id_'.$filters['user_id'], $data);

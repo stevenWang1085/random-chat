@@ -126,6 +126,8 @@ class UserFriendService
             Redis::set("personal_room_id_{$room->id}", json_encode([
                 'user_id' => [$result->to_user_id, $result->from_user_id]
             ]));
+            Redis::sadd("user_id_{$result->to_user_id}_friends", $result->from_user_id);
+            Redis::sadd("user_id_{$result->from_user_id}_friends", $result->to_user_id);
         }
     }
 }

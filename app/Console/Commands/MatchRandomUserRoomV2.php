@@ -38,8 +38,10 @@ class MatchRandomUserRoomV2 extends Command
             $compare_users = collect($all_user)->transform(function ($node) {
                 return json_decode($node);
             });
+            #紀錄已配對的
             $continue_data = [];
             $continue_user_id = [];
+
             #處理配對
             foreach ($all_user as $user_id => $value)  {
                 if (count($continue_data) != 0) {
@@ -49,10 +51,13 @@ class MatchRandomUserRoomV2 extends Command
                     }
                 }
                 $data = json_decode($value, true);
+                #需過濾當前好友
+                $friend_key = "user_id_{$data['user_id']}_friends";
                 if ($data['select_gender'] != 'all') {
                     $match_user = $compare_users
                         ->where('user_id', '!=', $data['user_id'])
                         ->whereNotIn('user_id', $continue_user_id)
+                        ->whereNotIn('user_id', Redis::smembers($friend_key))
                         ->where('gender', $data['select_gender'])
                         ->whereIn('select_gender', ['all', $data['gender']])
                         ->sortBy('created_at')
@@ -61,6 +66,7 @@ class MatchRandomUserRoomV2 extends Command
                     $match_user = $compare_users
                         ->where('user_id', '!=', $data['user_id'])
                         ->whereNotIn('user_id', $continue_user_id)
+                        ->whereNotIn('user_id', Redis::smembers($friend_key))
                         ->whereIn('select_gender', [$data['gender'], 'all'])
                         ->sortBy('created_at')
                         ->first();
