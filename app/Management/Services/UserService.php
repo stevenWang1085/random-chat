@@ -83,6 +83,7 @@ class UserService
         return [
             'user_id'                 => Auth::id(),
             'username'                => $user['username'],
+            'is_admin'                => $user['is_admin'],
             'token'                   => $token,
             'add_friend_unread_count' => Redis::get("user_id_{$user['id']}_unread_add_friend_count")
         ];

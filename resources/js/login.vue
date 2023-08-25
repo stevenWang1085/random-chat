@@ -64,10 +64,12 @@ export default {
                 account: member.account,
                 password: member.password
             }).then((response) => {
+
                 let user_data =  response.data.return_data;
                 localStorage.setItem('user_id', user_data.user_id);
                 localStorage.setItem('username', user_data.username);
                 localStorage.setItem('token', user_data.token);
+                localStorage.setItem('is_admin', user_data.is_admin);
                 sessionStorage.setItem('add_friend_unread_count', user_data.add_friend_unread_count);
                 location.href = '/random';
                 }
