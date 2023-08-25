@@ -45,6 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/friend_chat', function () {
         return view('friend_chat');
     });
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
 });
 
 

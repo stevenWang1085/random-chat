@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\RandomChatController;
 use App\Http\Controllers\UserController;
@@ -43,5 +44,9 @@ Route::middleware(['jwt.verify'])->prefix('v1')->group(function () {
         Route::get('room/{room_id}', [MessageController::class, 'getRoomMessage']);
         Route::post('send', [MessageController::class, 'store']);
 
+    });
+
+    Route::prefix('dashboard')->group(function () {
+        Route::get('list', [DashboardController::class, 'list']);
     });
 });

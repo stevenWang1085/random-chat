@@ -39,6 +39,14 @@
                             <span v-if="add_friend_unread_count > 0" class="badge bg-danger rounded-pill">{{add_friend_unread_count}}</span>
                         </a>
                     </li>
+                    <li v-if="is_admin == 1" class="nav-item">
+                        <a class="nav-link active" href="/dashboard">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                            數據觀察
+                        </a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav dropdown-menu-end mb-2 mb-md-0">
                     <div class="dropdown">
@@ -74,9 +82,11 @@ export default {
     name: "home",
     setup () {
         let username = ref(null);
+        let is_admin = ref(0);
         let personal_channel_name = 'personal-room-' + localStorage.getItem('user_id');
         let add_friend_unread_count = ref(0);
         username.value = localStorage.getItem('username');
+        is_admin.value = localStorage.getItem('is_admin');
         add_friend_unread_count.value = sessionStorage.getItem('add_friend_unread_count');
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
         axios.interceptors.response.use(
@@ -115,6 +125,7 @@ export default {
         return {
             username,
             add_friend_unread_count,
+            is_admin,
             logout
         }
     }
