@@ -5,7 +5,7 @@
             <div class="row">
                 <h5 class="font-weight-bold mb-3 text-center text-lg-start">好友清單</h5>
                     <div class="card">
-                        <div class="scrollspy-example ">
+                        <div class="scrollspy-example friend-list-scrollspy">
                         <div class="card-body">
                             <ul v-if="friend_data.length === 0" class="list-unstyled mb-3">
                                 <li class="p-2 border-bottom" style="background-color: #eee;">
@@ -46,7 +46,7 @@
             </div>
         </div>
     </section>
-    <section v-if="show_friend_chat" class="gradient-custom scrollspy-example">
+    <section v-if="show_friend_chat" class="gradient-custom scrollspy-example friend-chat-scrollspy">
         <div class="container py-5">
             <div class="row">
                 <div>
@@ -169,6 +169,35 @@ export default {
 
         async function getRoomChatData(room_id) {
             chat_user_name.value = sessionStorage.getItem('chat_user_name');
+
+            personal_room_channel_name = 'random-chat-room-' + room_id;
+            Echo.private(personal_room_channel_name)
+                .listen('.random-chat-room', function (e) {
+                    let to_user_id = sessionStorage.getItem('chat_user_id');
+                    let to_room_id = sessionStorage.getItem('room_id');
+                    if ( to_user_id == e.to_user_id || room_id == to_room_id) {
+                        chat_data.value.push(e);
+                    }
+                    nextTick(function () {
+                        let friend_chat_scroll = document.querySelector('.friend-chat-scrollspy')
+                        friend_chat_scroll.scrollTop = friend_chat_scroll.scrollHeight;
+                    })
+                })
+                .listenForWhisper('typing', function (e) {
+                    typing.value = true;
+                    typing_data.value = {
+                        user_id: e.user_id,
+                        message: e.message
+                    };
+                    // nextTick(function () {
+                    //     let scroll = document.querySelector('.friend-chat-scrollspy')
+                    //     scroll.scrollTop = scroll.scrollHeight;
+                    // })
+                    setTimeout( () => {
+                        typing.value = false;
+                    }, 1000)
+                });
+
             await axios.get('api/v1/message/room/' + room_id, {
                 params: {
                     room_type:'personal'
@@ -183,8 +212,8 @@ export default {
             });
             setTimeout(function () {
                 nextTick(function () {
-                    let scroll = document.querySelector('.scrollspy-example')
-                    scroll.scrollTop = scroll.scrollHeight;
+                    let friend_scroll = document.querySelector('.friend-chat-scrollspy')
+                    friend_scroll.scrollTop = friend_scroll.scrollHeight;
                 })
             }, 500)
         }
@@ -221,38 +250,10 @@ export default {
         onMounted(function () {
             getFriendList(user_id);
         });
-        watch(friend_data, (new_value, old_value) => {
-            new_value.forEach(function (node) {
-                personal_room_channel_name = 'random-chat-room-' + node.room_id;
-                Echo.private(personal_room_channel_name)
-                    .listen('.random-chat-room', function (e) {
-                        let to_user_id = sessionStorage.getItem('chat_user_id');
-                        let to_room_id = sessionStorage.getItem('room_id');
-                        if ( to_user_id == e.to_user_id || node.room_id == to_room_id) {
-                            chat_data.value.push(e);
-                        }
-                        nextTick(function () {
-                            let scroll = document.querySelector('.scrollspy-example')
-                            scroll.scrollTop = scroll.scrollHeight;
-                        })
-                    })
-                    .listenForWhisper('typing', function (e) {
-                        typing.value = true;
-                        typing_data.value = {
-                            user_id: e.user_id,
-                            message: e.message
-                        };
-                        nextTick(function () {
-                            let scroll = document.querySelector('.scrollspy-example')
-                            scroll.scrollTop = scroll.scrollHeight;
-                        })
-                        setTimeout( () => {
-                            typing.value = false;
-                        }, 1000)
-                    });
-
-            })
-        })
+        // watch(friend_data, (new_value, old_value) => {
+        //     new_value.forEach(function (node) {
+        //     })
+        // })
 
         return {
             friend_data,
