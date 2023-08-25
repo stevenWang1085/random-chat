@@ -30,6 +30,7 @@ export default ({ mode }) => {
                     'resources/js/register.js',
                     'resources/js/websocket.js',
                     'resources/js/callback.js',
+                    'resources/js/dashboard.js',
                 ],
                 refresh: true,
             }),
