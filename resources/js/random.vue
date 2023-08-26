@@ -170,11 +170,9 @@ export default {
 
 
         onMounted(function () {
-            console.log(personal_channel_name);
             checkRandomChat();
             Echo.private(personal_channel_name)
                 .listen('.success-get-random-user', function (e) {
-                    console.log(e);
                     match_user_alert_class.value = 'alert alert-success alert-dismissible fade show';
                     match_user_alert.value = true;
                     match_username.value = e.match_username;
@@ -185,7 +183,6 @@ export default {
                     random_room_id.value = e.room_id;
                 })
                 .listen('.leave-random-room', function (e) {
-                    console.log('leave-random-room');
                     input_disabled.value = true;
                     match_user_alert.value = true;
                     match_user_alert_class.value = 'alert alert-danger alert-dismissible fade show';
@@ -202,7 +199,6 @@ export default {
         })
 
         watch(random_room_id, (new_value, old_value) => {
-            console.log('room_id  -> ' + new_value);
             random_chat_room_channel_name = 'random-chat-room-'+new_value;
             Echo.private(random_chat_room_channel_name)
                 .listen('.random-chat-room', function (e) {
@@ -313,7 +309,6 @@ export default {
                         room_id: random_room_id.value
                     })
                         .then((response) => {
-                            console.log('leave:' + random_chat_room_channel_name)
                             Echo.leave(random_chat_room_channel_name);
                             setTimeout(function () {
                                 location.reload();
