@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['jwt.verify'])->prefix('v1')->group(function () {
     #使用者
     Route::controller(UserController::class)->prefix('user')->group(function () {
-        Route::post('register', 'register');
+        Route::post('register', 'register')->withoutMiddleware('jwt.verify');
         Route::post('/login', 'login')->withoutMiddleware('jwt.verify');
         Route::post('/logout', 'logout');
         Route::patch('edit/profile', 'editProfile');
