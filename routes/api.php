@@ -19,34 +19,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::middleware(['jwt.verify'])->prefix('v1')->group(function () {
-    Route::prefix('user')->group(function () {
-        Route::post('/register', [UserController::class, 'register'])->withoutMiddleware('jwt.verify');
-        Route::post('/login', [UserController::class, 'login'])->withoutMiddleware('jwt.verify');
-        Route::post('/logout', [UserController::class, 'logout']);
-        Route::patch('edit/profile', [UserController::class, 'editProfile']);
-        Route::get('/google/login', [UserController::class, 'googleLogin'])->withoutMiddleware('jwt.verify');
+    #使用者
+    Route::controller(UserController::class)->prefix('user')->group(function () {
+        Route::post('register', 'register')->withoutMiddleware('jwt.verify');
+        Route::post('/login', 'login')->withoutMiddleware('jwt.verify');
+        Route::post('/logout', 'logout');
+        Route::patch('edit/profile', 'editProfile');
+        Route::get('/google/login', 'googleLogin')->withoutMiddleware('jwt.verify');
     });
-
-    Route::prefix('friend')->group(function () {
-        Route::get('/{user_id}/list', [UserFriendController::class, 'list']);
-        Route::post('/invite', [UserFriendController::class, 'store']);
-        Route::patch('/{user_friend_id}/update', [UserFriendController::class, 'update']);
+    #好友
+    Route::controller(UserFriendController::class)->prefix('friend')->group(function () {
+        Route::get('/{user_id}/list', 'list');
+        Route::post('/invite', 'store');
+        Route::patch('/{user_friend_id}/update', 'update');
     });
-
-    Route::prefix('random')->group(function () {
-        Route::post('start', [RandomChatController::class, 'startRandom']);
-        Route::post('check', [RandomChatController::class, 'checkRandomChat']);
-        Route::post('leave', [RandomChatController::class, 'leaveRandomRoom']);
-        Route::post('cancel', [RandomChatController::class, 'cancelRandom']);
+    #隨機配對
+    Route::controller(RandomChatController::class)->prefix('random')->group(function () {
+        Route::post('start', 'startRandom');
+        Route::post('check', 'checkRandomChat');
+        Route::post('leave', 'leaveRandomRoom');
+        Route::post('cancel', 'cancelRandom');
     });
-
-    Route::prefix('message')->group(function () {
-        Route::get('room/{room_id}', [MessageController::class, 'getRoomMessage']);
-        Route::post('send', [MessageController::class, 'store']);
-
+    #訊息
+    Route::controller(MessageController::class)->prefix('message')->group(function () {
+        Route::get('room/{room_id}', 'getRoomMessage');
+        Route::post('send', 'store');
     });
-
-    Route::prefix('dashboard')->group(function () {
-        Route::get('list', [DashboardController::class, 'list']);
+    #儀表板
+    Route::controller(DashboardController::class)->prefix('dashboard')->group(function () {
+        Route::get('list', 'list');
     });
 });
