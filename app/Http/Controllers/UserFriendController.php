@@ -42,7 +42,7 @@ class UserFriendController extends Controller
                 'user_id'  => $user_id,
                 'status'   => $request->status,
                 'page'     => $request->page ?? 1,
-                'paginate' => $request->paginate ?? 20,
+                'paginate' => $request->paginate ?? 50,
             ];
             $data = $this->service->index($filters);
             if ($data->isEmpty()) {
